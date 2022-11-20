@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Marinel_ui.Data.Entities.ExpenseType>;
+
+<div id="expense-type-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Expense Types</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var expenseType in Model)
+                            {
+                                <tr>
+                                    <td>@expenseType.Name</td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+                <form id="new-expense-type-form" method="post">
+
+                    <input type="hidden" name="form-type" value="expense-type" />
+
+                    <div id="new-expense-type-group" class="new-expense-type-group" style="display:none;">
+
+                        <div class="form-group">
+                            <label for="new-expense-type" class="form-label">Expense Type Name</label>
+                            <input type="text" class="form-control" id="new-expense-type-input" name="new-expense-type-input">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <div style="width:100%;">
+                    <div style="float:left;">
+                        <button id="enter-expense-type-btn" type="button" class="btn btn-warning enter-expense-btn">Enter New Expense Type</button>
+                    </div>
+                    <div style="float:right;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="update-expense-item-type-btn" type="submit" class="btn btn-success">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

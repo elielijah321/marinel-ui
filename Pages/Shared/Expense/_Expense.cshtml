@@ -1,0 +1,156 @@
+﻿@model Marinel_ui.Pages.SettingsPageModel;
+
+<button id="newExpenseTypeBtn" type="button" class="btn btn-success">Add New Expense Type</button>
+<button id="newExpenseItemBtn" type="button" class="btn btn-success">Add New Expense Item</button>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Cost per unit</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ExpenseItems)
+        {
+            <tr>
+                <td>@item.Description</td>
+                <td>@item.Type.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.Amount</td>
+                <td>
+                    <button type="button" class="btn btn-warning edit-expense-item" value="@item.Id">
+                        Edit
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div id="new-expense-item-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new expense item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="new-expense-item-form" method="post">
+
+                    <input type="hidden" name="form-type" value="expense-item" />
+
+                    @* Description *@
+                    <div class="form-group">
+                        <label for="expense-item-name-input" class="form-label">Item Name</label>
+                        <input type="text" class="form-control" id="expense-item-name-input" name="expense-item-name-input">
+                    </div>
+
+                    @* Type *@
+                    <div class="form-group">
+                        <label for="expense-item-type-input" class="form-label">Item Type</label>
+                        <select id="expense-item-type-input" name="expense-item-type-input" class="form-select" aria-label="expense-item-type-input">
+                            <option selected>Select a type...</option>
+
+                            @{
+                                foreach (var item_type in Model.ExpenseTypes)
+                                {
+                                    <option value="@item_type.Name">@item_type.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    @* Quantity *@
+                    <div class="form-group">
+                        <label for="expense-item-quantity-input" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="expense-item-quantity-input" name="expense-item-quantity-input">
+                    </div>
+
+                    @* Amount *@
+                    <div class="form-group">
+                        <label for="expense-item-unit-cost-input" class="form-label">Cost per unit</label>
+                        <input type="number" class="form-control" id="expense-item-unit-cost-input" name="expense-item-unit-cost-input">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="new-expense-item-btn" type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@foreach (var item in Model.ExpenseItems)
+{
+<div id="edit-expense-item-modal-@item.Id" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit expense item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-expense-item-form-@item.Id" method="post">
+
+                    <input type="hidden" name="form-type" value="expense-item-update" />
+                    <input type="hidden" name="form-id" value="@item.Id" />
+
+                    <div class="form-group">
+                        <label for="expense-item-name-input-@item.Id" class="form-label">Item Name</label>
+                        <input type="text" class="form-control" id="expense-item-name-input-@item.Id" name="expense-item-name-input-@item.Id" value="@item.Description">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expense-item-type-input-@item.Id" class="form-label">Item Type</label>
+                        <select id="expense-item-type-input-@item.Id" name="expense-item-type-input-@item.Id" class="form-select" aria-label="item-type-input">
+                            <option selected>Select a type...</option>
+
+                            @{
+                                foreach (var item_type in Model.ExpenseTypes)
+                                {
+                                    if (item_type.Name == item.Type.Name)
+                                    {
+                                        <option value="@item_type.Name" selected>@item_type.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item_type.Name">@item_type.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expense-item-quantity-input-@item.Id" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="expense-item-quantity-input-@item.Id" name="expense-item-quantity-input-@item.Id" value="@item.Quantity">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expense-item-unit-cost-input-@item.Id" class="form-label">Cost per unit</label>
+                        <input type="number" class="form-control" id="expense-item-unit-cost-input-@item.Id" name="expense-item-unit-cost-input-@item.Id" value="@item.Amount">
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary edit-expense-item-submit-btn" value="@item.Id" >Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+}
+
+
+<partial name="Expense/_ExpenseTypeModal" model="@Model.ExpenseTypes" />

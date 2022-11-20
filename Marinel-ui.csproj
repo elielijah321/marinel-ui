@@ -5,6 +5,34 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Marinel_ui</RootNamespace>
+    <UserSecretsId>ed118a71-4e91-4ef3-9de7-652545d1bc6f</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Azure.Extensions.AspNetCore.Configuration.Secrets" />
+    <None Remove="Azure.Identity" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
+    <None Remove="Microsoft.Graph" />
+    <None Remove="Microsoft.Identity.Web" />
+    <None Remove="Microsoft.Identity.Web.UI" />
+    <None Remove="Data\" />
+    <None Remove="Microsoft.EntityFrameworkCore.Design" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
+    <PackageReference Include="Azure.Identity" Version="1.8.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Graph" Version="4.47.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.25.8" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.25.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
 </Project>
