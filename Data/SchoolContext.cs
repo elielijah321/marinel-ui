@@ -40,11 +40,7 @@ namespace Marinel_ui.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            //var connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? _config["ConnectionString"];
-            var connectionString = "Server=tcp:school-draft-mssqlserver-staging.database.windows.net,1433;Initial Catalog=school-draft-sql-db-staging;Persist Security Info=False;User ID=missadministrator;Password=thisIsKat11;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
-
-            //
+            var connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? _config["ConnectionString"];
             optionsBuilder.UseSqlServer(connectionString);
         }
 
