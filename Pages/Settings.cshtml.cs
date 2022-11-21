@@ -22,6 +22,7 @@ namespace Marinel_ui.Pages
 
         public List<Class> Classes { get; set; }
         public List<Student> Students { get; set; }
+        public List<Teacher> Teachers { get; set; }
         public List<InventoryType> InventoryTypes { get; set; }
         public List<InventoryItem> InventoryItems { get; set; }
         public List<ExpenseType> ExpenseTypes { get; set; }
@@ -83,6 +84,12 @@ namespace Marinel_ui.Pages
                 case "expense-item-update":
                     UpdateExpenseItem();
                     break;
+                case "teacher":
+                    AddTeacher();
+                    break;
+                case "edit-teacher":
+                    UpdateTeacher();
+                    break;
                 default:
                     break;
             }
@@ -104,6 +111,42 @@ namespace Marinel_ui.Pages
 
             _schoolRepository.AddStudent(student);
         }
+
+        private void AddTeacher()
+        {
+            var t_Name = Request.Form["teacher-name"].ToString();
+            var t_Notes = Request.Form["teacher-notes"].ToString();
+            var t_Class = Request.Form["teacher-class-ddl"].ToString();
+
+            var teacherClass = Classes.FirstOrDefault(c => c.Id.ToString() == t_Class);
+
+            var teacher = new Teacher();
+            teacher.Name = t_Name;
+            teacher.Notes = t_Notes;
+            teacher.Class = teacherClass;
+
+            _schoolRepository.AddTeacher(teacher);
+        }
+
+        private void UpdateTeacher()
+        {
+            var formIDString = Request.Form[$"form-id"].ToString();
+
+            var t_Name = Request.Form[$"teacher-name-{formIDString}"].ToString();
+            var t_Notes = Request.Form[$"teacher-notes-{formIDString}"].ToString();
+            var t_Class = Request.Form[$"teacher-class-ddl-{formIDString}"].ToString();
+
+            var teacherClass = Classes.FirstOrDefault(c => c.Id.ToString() == t_Class);
+
+            var teacher = new Teacher();
+            teacher.Id = Int32.Parse(formIDString);
+            teacher.Name = t_Name;
+            teacher.Notes = t_Notes;
+            teacher.ClassId = teacherClass.Id;
+
+            _schoolRepository.UpdateTeacher(teacher);
+        }
+
 
         private void AddClass()
         {
@@ -290,8 +333,6 @@ namespace Marinel_ui.Pages
 
         }
 
-
-
         private void UpdateClassItem()
         {
             var formIDString = Request.Form[$"form-id"].ToString();
@@ -314,6 +355,7 @@ namespace Marinel_ui.Pages
         {
             Classes = _schoolRepository.GetAllClasses().ToList();
             Students = _schoolRepository.GetAllStudents().ToList();
+            Teachers = _schoolRepository.GetAllTeachers().ToList();
             InventoryTypes = _schoolRepository.GetAllInventoryTypes().ToList();
             InventoryItems = _schoolRepository.GetAllInventoryItems().ToList();
             ExpenseTypes = _schoolRepository.GetAllExpenseTypes().ToList();
@@ -324,6 +366,13 @@ namespace Marinel_ui.Pages
         public async Task<JsonResult> OnGetDeleteUserById(string userId)
         {
             await _msGraphService.DeleteUser(userId);
+
+            return new JsonResult("Ok");
+        }
+
+        public async Task<JsonResult> OnGetDeleteTeacherById(string teacherId)
+        {
+            _schoolRepository.RemoveTeacher(Int32.Parse(teacherId));
 
             return new JsonResult("Ok");
         }

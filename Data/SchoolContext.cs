@@ -19,6 +19,7 @@ namespace Marinel_ui.Data
         private readonly IWebHostEnvironment _env;
 
         public DbSet<Student> Students { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<FeedingInfoItem> FeedingInfoItems { get; set; }
         public DbSet<FeedingExpense> FeedingExpenses { get; set; }
@@ -40,11 +41,7 @@ namespace Marinel_ui.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            //var connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? _config["ConnectionString"];
-            var connectionString = "Server=tcp:school-draft-mssqlserver-staging.database.windows.net,1433;Initial Catalog=school-draft-sql-db-staging;Persist Security Info=False;User ID=missadministrator;Password=thisIsKat11;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
-
-            //
+            var connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? _config["ConnectionString"];
             optionsBuilder.UseSqlServer(connectionString);
         }
 
@@ -56,6 +53,7 @@ namespace Marinel_ui.Data
 
             var classes = SeedHelper.GetClasses(contentRootPath);
             var students = SeedHelper.GetStudents(contentRootPath);
+            var teachers = SeedHelper.GetTeachers(contentRootPath);
             var expenseTypes = SeedHelper.GetExpenseTypes(contentRootPath);
             var inventoryTypes = SeedHelper.GetInventoryTypes(contentRootPath);
             var inventoryItems = SeedHelper.GetInventoryItems(contentRootPath);
@@ -70,6 +68,12 @@ namespace Marinel_ui.Data
             {
                 modelBuilder.Entity<Student>()
                     .HasData(seedStudent);
+            }
+
+            foreach (var seedTeacher in teachers)
+            {
+                modelBuilder.Entity<Teacher>()
+                    .HasData(seedTeacher);
             }
 
             foreach (var seedExpenseType in expenseTypes)
@@ -89,34 +93,6 @@ namespace Marinel_ui.Data
                 modelBuilder.Entity<InventoryItem>()
                     .HasData(seedInventoryItem);
             }
-        }
-
-        public string GetKey()
-        {
-            var envKey = Environment.GetEnvironmentVariable("Environment");
-            var keyPrefix = "";
-
-            switch (envKey)
-            {
-                case "Development":
-                    keyPrefix = "dev";
-                    break;
-                case "Staging":
-                    keyPrefix = "staging";
-                    break;
-                default:
-                    keyPrefix = "dev";
-                    break;
-            }
-
-
-            var keyName = $"{keyPrefix}-connection-string";
-           // var connectionString = new SecretProvider(_config).GetSecret(keyName);
-
-
-            return keyName;
-
-            //return Environment.GetEnvironmentVariable("Environment");
         }
     }
 }

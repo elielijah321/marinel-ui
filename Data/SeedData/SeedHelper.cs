@@ -25,6 +25,14 @@ namespace Marinel_ui.Data.SeedData
             return JsonSerializer.Deserialize<IEnumerable<Student>>(json);
         }
 
+        public static IEnumerable<Teacher> GetTeachers(string contentRootPath)
+        {
+            string filePath = Path.Combine(contentRootPath, $"{seedDataFolder}/Teachers.json");
+            var json = File.ReadAllText(filePath);
+
+            return JsonSerializer.Deserialize<IEnumerable<Teacher>>(json);
+        }
+
         public static IEnumerable<ExpenseType> GetExpenseTypes(string contentRootPath)
         {
             string filePath = Path.Combine(contentRootPath, $"{seedDataFolder}/ExpenseType.json");
