@@ -5,8 +5,8 @@ namespace Marinel_ui.Data
 {
     public interface ISchoolRepository
     {
-        string GetKey();
         IEnumerable<Student> GetAllStudents();
+        IEnumerable<Teacher> GetAllTeachers();
         IEnumerable<Class> GetAllClasses();
         IEnumerable<FeedingInfoItem> GetAllFeedingItems();
         IEnumerable<ClassFeeInfoItem> GetAllClasseFeeInfoItems();
@@ -19,6 +19,7 @@ namespace Marinel_ui.Data
         IEnumerable<Expense> GetAllExpenses();
 
         void AddStudent(Student student);
+        void AddTeacher(Teacher teacher);
         void AddClass(Class newClass);
         void AddFeedingInfoItem(FeedingInfoItem newFeedingInfoItem);
         void AddInventoryType(InventoryType newInventoryType);
@@ -30,6 +31,7 @@ namespace Marinel_ui.Data
         void AddExpenseType(ExpenseType expenseType);
         void AddExpense(Expense expense);
 
+        void UpdateTeacher(Teacher teacher);
         void UpdateFeedingInfoItem(FeedingInfoItem feedingInfoItem);
         void UpdateClassFeeInfoItem(ClassFeeInfoItem classFeeInfoItem);
         void UpdateInventoryItem(InventoryItem inventoryItem);
@@ -39,5 +41,8 @@ namespace Marinel_ui.Data
         void UpdatePandCUniformSale(PandCUniformSale pAndCUniformSale);
         void UpdateExpenseType(ExpenseType expenseType);
         void UpdateExpense(Expense expense);
+
+
+        void RemoveTeacher(int teacherID);
     }
 }

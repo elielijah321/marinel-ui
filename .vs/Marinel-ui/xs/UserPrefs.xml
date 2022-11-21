@@ -6,19 +6,25 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="README.md">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="README.md" Line="1" Column="13" />
+      <File FileName="README.md" Line="1" Column="10" />
+      <File FileName="../../.microsoft/usersecrets/ed118a71-4e91-4ef3-9de7-652545d1bc6f/secrets.json" Line="10" Column="25" />
+      <File FileName="Data/SchoolRepository.cs" Line="1" Column="1" />
+      <File FileName="Pages/Shared/_Layout.cshtml" Line="6" Column="40" />
+      <File FileName="Data/SchoolContext.cs" Line="47" Column="26" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Marinel-ui" expanded="True">
             <Node name="Marinel-ui" expanded="True">
+              <Node name="Data" expanded="True">
+                <Node name="SchoolContext.cs" selected="True" />
+              </Node>
               <Node name="Pages" expanded="True">
                 <Node name="Shared" expanded="True" />
               </Node>
-              <Node name="README.md" selected="True" />
             </Node>
           </Node>
         </State>

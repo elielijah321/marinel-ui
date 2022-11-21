@@ -14,11 +14,6 @@ namespace Marinel_ui.Data
             _ctx = ctx;
         }
 
-        public string GetKey()
-        {
-            return _ctx.GetKey();
-        }
-
         // Get
 
         public IEnumerable<Student> GetAllStudents()
@@ -26,6 +21,11 @@ namespace Marinel_ui.Data
             return _ctx.Students
                 .OrderBy(s => s.Name)
                 .ToList();
+        }
+
+        public IEnumerable<Teacher> GetAllTeachers()
+        {
+            return _ctx.Teachers.ToList();
         }
 
         public IEnumerable<Class> GetAllClasses()
@@ -99,6 +99,12 @@ namespace Marinel_ui.Data
         public void AddStudent(Student student)
         {
             _ctx.Students.Add(student);
+            SaveAll();
+        }
+
+        public void AddTeacher(Teacher teacher)
+        {
+            _ctx.Teachers.Add(teacher);
             SaveAll();
         }
 
@@ -298,7 +304,9 @@ namespace Marinel_ui.Data
 
         public void UpdateExpenseType(ExpenseType expenseType)
         {
-            throw new System.NotImplementedException();
+            var e_type = _ctx.ExpenseTypes.FirstOrDefault(e => e.Id == expenseType.Id);
+            e_type.Name = expenseType.Name;
+            SaveAll();
         }
 
         public void UpdateExpense(Expense expense)
@@ -314,10 +322,29 @@ namespace Marinel_ui.Data
             SaveAll();
         }
 
+        public void UpdateTeacher(Teacher teacher)
+        {
+            var _teacher = _ctx.Teachers.Where(t => t.Id == teacher.Id).First();
+
+            _teacher.Name = teacher.Name;
+            _teacher.Notes = teacher.Notes;
+            _teacher.ClassId = teacher.ClassId;
+
+            SaveAll();
+        }
+
         // Save
         private bool SaveAll()
         {
             return _ctx.SaveChanges() > 0;
+        }
+
+        public void RemoveTeacher(int teacherID)
+        {
+            var teacher = _ctx.Teachers.FirstOrDefault(t => t.Id == teacherID);
+
+            _ctx.Remove(teacher);
+            SaveAll();
         }
     }
 }

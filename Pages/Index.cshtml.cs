@@ -16,7 +16,6 @@ namespace Marinel_ui.Pages
         private readonly ISchoolRepository _schoolRepository;
 
         public List<Student> Students { get; set; }
-        public string Env { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, ISchoolRepository schoolRepo)
         {
@@ -27,8 +26,6 @@ namespace Marinel_ui.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             Students = _schoolRepository.GetAllStudents().ToList();
-            Env = _schoolRepository.GetKey();
-
             return Page();
         }
     }

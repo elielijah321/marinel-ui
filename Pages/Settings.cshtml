@@ -10,6 +10,9 @@
         <button class="nav-link active" id="v-pills-students-tab" data-bs-toggle="pill" data-bs-target="#v-pills-students" type="button" role="tab" aria-controls="v-pills-students" aria-selected="false">
             Students
         </button>
+        <button class="nav-link" id="v-pills-teachers-tab" data-bs-toggle="pill" data-bs-target="#v-pills-teachers" type="button" role="tab" aria-controls="v-pills-teachers" aria-selected="false">
+            Teachers
+        </button>
         <button class="nav-link" id="v-pills-classes-tab" data-bs-toggle="pill" data-bs-target="#v-pills-classes" type="button" role="tab" aria-controls="v-pills-classes" aria-selected="false">
             Classes
         </button>
@@ -28,6 +31,9 @@
     <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-students" role="tabpanel" aria-labelledby="v-pills-students-tab">
             <partial name="_StudentList" model="@Model" />
+        </div>
+        <div class="tab-pane fade" id="v-pills-teachers" role="tabpanel" aria-labelledby="v-pills-teachers-tab">
+            <partial name="Teacher/_TeacherList" model="@Model" />
         </div>
         <div class="tab-pane fade" id="v-pills-classes" role="tabpanel" aria-labelledby="v-pills-classes-tab">
             <partial name="Class/_ClassList" model="@Model" />
@@ -66,6 +72,63 @@
                 alert('Error: Must Enter name and select a class');
             }
 
+        });
+
+        // Teacher
+
+        $('#newTeacherBtn').click(function () {
+            $('#new-teacher-modal').modal('show');
+        });
+
+        $('#new-teacher-submit-btn').click(function () {
+
+            var nameFieldVal = $('#teacher-name').val();
+
+            var classDDLVal = $('#teacher-class-ddl').val();
+
+            if (classDDLVal !== 'Select Class...' && nameFieldVal.length > 0) {
+                $('#new-teacher-form').submit();
+            } else {
+                alert('Error: Must Enter all fields');
+            }
+        });
+
+        $('.edit-teacher-btn').click(function () {
+
+            var selectedTeacherId = $(this).val();
+            var selectedTeacherModalId = "#edit-teacher-modal-" + selectedTeacherId;
+
+            $(selectedTeacherModalId).modal('show');
+        });
+
+        $('.edit-teacher-submit-btn').click(function () {
+
+            var formId = $(this).val();
+
+            var nameFieldVal = $('#teacher-name-' + formId).val();
+            var classDDLVal = $('#teacher-class-ddl-' + formId).val();
+
+            if (classDDLVal !== 'Select Class...' && nameFieldVal.length > 0) {
+                $('#edit-teacher-form-' + formId).submit();
+            } else {
+                alert('Error: Must Enter all fields');
+            }
+        });
+
+        $('.delete-teacher-btn').click(function () {
+
+            var formId = $(this).val();
+
+            if (confirm("Are you sure you want to delete this teacher")) {
+                return $.ajax({
+                    type: "GET",
+                    url: "/Settings/DeleteTeacherById",
+                    data: { teacherId: formId },
+                    success: function () {
+                        location.href = "/Settings";
+                    }
+                });
+            }
         });
 
 
