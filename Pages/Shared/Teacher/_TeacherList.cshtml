@@ -1,0 +1,143 @@
+﻿@model Marinel_ui.Pages.SettingsPageModel
+
+<button id="newTeacherBtn" type="button" class="btn btn-success">Add New Teacher</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Notes</th>
+            <th scope="col">Class</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var _teacher in Model.Teachers)
+            {
+                <tr>
+                    <td>@_teacher.Name</td>
+                    <td>@_teacher.Notes</td>
+                    <td>@_teacher.Class.Name</td>
+                    <td>
+                        <button type="button" class="btn btn-warning edit-teacher-btn" value="@_teacher.Id">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<div id="new-teacher-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new teacher</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="new-teacher-form" method="post">
+
+                    <input type="hidden" name="form-type" value="teacher" />
+
+                    <div class="form-group">
+                        <label for="teacher-name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="teacher-name" name="teacher-name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="teacher-notes" class="form-label">Notes</label>
+                        <input type="text" class="form-control" id="teacher-notes" name="teacher-notes">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="teacher-class-ddl" class="form-label">Class</label>
+                        <select id="teacher-class-ddl" name="teacher-class-ddl" class="form-select" aria-label="teacher-class-ddl">
+                            @{
+                                <option value="Select Class...">Select Class...</option>
+                                @foreach (var _class in Model.Classes)
+                                {
+                                    <option value="@_class.Id">@_class.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="new-teacher-submit-btn" type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    foreach (var _teacher in Model.Teachers)
+    {
+        <div id="edit-teacher-modal-@_teacher.Id" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit teacher</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-teacher-form-@_teacher.Id" method="post">
+
+                            <input type="hidden" name="form-type" value="edit-teacher" />
+                            <input type="hidden" name="form-id" value="@_teacher.Id" />
+
+                            <div class="form-group">
+                                <label for="teacher-name-@_teacher.Id" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="teacher-name-@_teacher.Id" name="teacher-name-@_teacher.Id" value="@_teacher.Name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="teacher-notes-@_teacher.Id" class="form-label">Notes</label>
+                                <input type="text" class="form-control" id="teacher-notes-@_teacher.Id" name="teacher-notes-@_teacher.Id" value="@_teacher.Notes">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="teacher-class-ddl-@_teacher.Id" class="form-label">Class</label>
+                                <select id="teacher-class-ddl-@_teacher.Id" name="teacher-class-ddl-@_teacher.Id" class="form-select" aria-label="teacher-class-ddl-@_teacher.Id">
+                                    @{
+                                        <option value="Select Class...">Select Class...</option>
+                                        @foreach (var _class in Model.Classes)
+                                        {
+                                            if (_teacher.ClassId == _class.Id)
+                                            {
+                                                <option value="@_class.Id" selected>@_class.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@_class.Id">@_class.Name</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        
+                        <div style="width:100%;">
+                            <div style="float:left;">
+                                <button id="delete-teacher-btn-@_teacher.Id" type="button" class="btn btn-danger delete-teacher-btn" value="@_teacher.Id">Delete Teacher</button>
+                            </div>
+                            <div style="float:right;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary edit-teacher-submit-btn" value="@_teacher.Id">Save changes</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
