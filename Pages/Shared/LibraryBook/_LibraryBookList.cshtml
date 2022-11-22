@@ -1,0 +1,118 @@
+﻿@model Marinel_ui.Pages.LibraryPageModel
+
+<button id="newLibraryBookBtn" type="button" class="btn btn-success">Add New Library Book</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Quantity</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var _book in Model.LibraryBooks)
+            {
+                <tr>
+                    <td>@_book.Title</td>
+                    <td>@_book.Author</td>
+                    <td>@_book.Quantity</td>
+                    <td>
+                        <button type="button" class="btn btn-warning edit-library-book-btn" value="@_book.Id">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<div id="new-library-book-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add library book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="new-library-book-form" method="post">
+
+                    <input type="hidden" name="form-type" value="library-book" />
+
+                    <div class="form-group">
+                        <label for="library-book-title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="library-book-title" name="library-book-title">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="library-book-author" class="form-label">Author</label>
+                        <input type="text" class="form-control" id="library-book-author" name="library-book-author">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="library-book-quantity" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="library-book-quantity" name="library-book-quantity">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="new-library-book-submit-btn" type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    foreach (var _book in Model.LibraryBooks)
+    {
+        <div id="edit-library-book-modal-@_book.Id" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit library book</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-library-book-form-@_book.Id" method="post">
+
+                            <input type="hidden" name="form-type" value="edit-library-book" />
+                            <input type="hidden" name="form-id" value="@_book.Id" />
+
+                            <div class="form-group">
+                                <label for="library-book-title-@_book.Id" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="library-book-title-@_book.Id" name="library-book-title-@_book.Id" value="@_book.Title">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="library-book-author-@_book.Id" class="form-label">Author</label>
+                                <input type="text" class="form-control" id="library-book-author-@_book.Id" name="library-book-author-@_book.Id" value="@_book.Author">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="library-book-quantity-@_book.Id" class="form-label">Quantity</label>
+                                <input type="number" class="form-control" id="library-book-quantity-@_book.Id" name="library-book-quantity-@_book.Id" value="@_book.Quantity">
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <div style="width:100%;">
+               
+                            <div style="float:right;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary edit-library-book-submit-btn" value="@_book.Id">Save changes</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
