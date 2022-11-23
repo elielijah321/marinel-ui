@@ -20,6 +20,7 @@ namespace Marinel_ui.Pages
         private readonly ISchoolRepository _schoolRepository;
 
         public List<LibraryBook> LibraryBooks { get; set; }
+        public List<Class> Classes { get; set; }
 
         public LibraryPageModel(ISchoolRepository schoolRepo, ILogger<LibraryPageModel> logger)
         {
@@ -89,6 +90,19 @@ namespace Marinel_ui.Pages
         private async Task GetPageData()
         {
             LibraryBooks = _schoolRepository.GetAllLibraryBook().ToList();
+            Classes = _schoolRepository.GetAllClasses().ToList();
+        }
+
+        public JsonResult OnGetStudentsByClassId(int classId)
+        {
+            GetPageData();
+
+            var students = Classes.FirstOrDefault(c => c.Id == classId).Students.Select(s => {
+                return new { Id = s.Id, Name = s.Name };
+            });
+
+
+            return new JsonResult(students);
         }
     }
 }

@@ -30,6 +30,16 @@
 <script>
     $(function () {
 
+
+        $.fn.getStudents = function (classId) {
+
+            return $.ajax({
+                type: "GET",
+                url: "/Library/StudentsByClassId",
+                data: { classId: classId }
+            });
+        }
+
         // Library Book
 
         $('#newLibraryBookBtn').click(function () {
@@ -72,6 +82,44 @@
             } else {
                 alert('Error: Must Enter all fields');
             }
+        });
+
+        $('.rent-library-book-btn').click(function () {
+
+            var selectedLibraryBookId = $(this).val();
+            var selectedLibraryBookModalId = "#edit-library-book-rental-modal-" + selectedLibraryBookId;
+
+            $(selectedLibraryBookModalId).modal('show');
+        });
+
+        $('.edit-library-book-rental-submit-btn').click(function () {
+
+            var formId = $(this).val();
+
+            var titleFieldVal = $('#library-book-title-' + formId).val();
+            var authorFieldVal = $('#library-book-author-' + formId).val();
+            var quantityFieldVal = $('#library-book-quantity-' + formId).val();
+
+            if (titleFieldVal.length > 0 && authorFieldVal.length > 0 && quantityFieldVal.length > 0) {
+                $('#edit-library-book-form-' + formId).submit();
+            } else {
+                alert('Error: Must Enter all fields');
+            }
+        });
+
+        $('#new-book-rental-class').change(function () {
+
+            var classId = $(this).val();
+            var options = '<option selected>Select a student...</option>';
+
+            $.when($.fn.getStudents(classId)).done(function (response) {
+
+                $.each(response, function (i, obj) {
+                    options += '<option value="' + obj.id + '">' + obj.name + '</option>';
+                });
+
+                $('#new-book-rental-student').html(options);
+            });
         });
 
 
