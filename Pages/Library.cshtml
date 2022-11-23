@@ -30,6 +30,8 @@
 <script>
     $(function () {
 
+        var todaysDate = new Date().toISOString().split('T')[0];
+        $('#new-book-rental-date').val(todaysDate);
 
         $.fn.getStudents = function (classId) {
 
