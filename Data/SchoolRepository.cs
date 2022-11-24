@@ -93,6 +93,11 @@ namespace Marinel_ui.Data
             return _ctx.Expenses.ToList();
         }
 
+        public IEnumerable<LibraryBook> GetAllLibraryBook()
+        {
+            return _ctx.LibraryBooks.ToList();
+        }
+
 
         // Add
 
@@ -184,6 +189,12 @@ namespace Marinel_ui.Data
         public void AddExpense(Expense expense)
         {
             _ctx.Expenses.Add(expense);
+            SaveAll();
+        }
+
+        public void AddLibraryBook(LibraryBook libraryBook)
+        {
+            _ctx.LibraryBooks.Add(libraryBook);
             SaveAll();
         }
 
@@ -333,10 +344,15 @@ namespace Marinel_ui.Data
             SaveAll();
         }
 
-        // Save
-        private bool SaveAll()
+        public void UpdateLibraryBook(LibraryBook libraryBook)
         {
-            return _ctx.SaveChanges() > 0;
+            var _libraryBook = _ctx.LibraryBooks.FirstOrDefault(l => l.Id == libraryBook.Id);
+
+            _libraryBook.Title = libraryBook.Title;
+            _libraryBook.Author = libraryBook.Author;
+            _libraryBook.Quantity = libraryBook.Quantity;
+
+            SaveAll(); 
         }
 
         public void RemoveTeacher(int teacherID)
@@ -345,6 +361,12 @@ namespace Marinel_ui.Data
 
             _ctx.Remove(teacher);
             SaveAll();
+        }
+
+        // Save
+        private bool SaveAll()
+        {
+            return _ctx.SaveChanges() > 0;
         }
     }
 }

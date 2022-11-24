@@ -32,6 +32,8 @@ namespace Marinel_ui.Data
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
         public DbSet<Expense> Expenses { get; set; }
 
+        public DbSet<LibraryBook> LibraryBooks { get; set; }
+
         public SchoolContext(IConfiguration config, IWebHostEnvironment env)
         {
             _config = config;

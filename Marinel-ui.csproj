@@ -18,6 +18,7 @@
     <None Remove="Microsoft.Identity.Web.UI" />
     <None Remove="Data\" />
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
+    <None Remove="Pages\Shared\LibraryBook\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
@@ -34,5 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Pages\Shared\LibraryBook\" />
   </ItemGroup>
 </Project>
