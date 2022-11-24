@@ -31,7 +31,7 @@
     $(function () {
 
         var todaysDate = new Date().toISOString().split('T')[0];
-        $('#new-book-rental-date').val(todaysDate);
+        $('.library-book-rental-date').val(todaysDate);
 
         $.fn.getStudents = function (classId) {
 
@@ -71,16 +71,16 @@
             $(selectedLibraryBookModalId).modal('show');
         });
 
-        $('.edit-library-book-submit-btn').click(function () {
+        $('.library-book-rental-submit-btn').click(function () {
 
             var formId = $(this).val();
 
-            var titleFieldVal = $('#library-book-title-' + formId).val();
-            var authorFieldVal = $('#library-book-author-' + formId).val();
-            var quantityFieldVal = $('#library-book-quantity-' + formId).val();
 
-            if (titleFieldVal.length > 0 && authorFieldVal.length > 0 && quantityFieldVal.length > 0) {
-                $('#edit-library-book-form-' + formId).submit();
+            var studentDDLVal = $('#library-book-rental-student-' + formId).val();
+            var rentalDateFieldVal = $('#library-book-rental-date-' + formId).val();
+
+            if (studentDDLVal !== 'Select a student...' && rentalDateFieldVal.length > 0) {
+                $('#library-book-rental-form-' + formId).submit();
             } else {
                 alert('Error: Must Enter all fields');
             }
@@ -89,7 +89,7 @@
         $('.rent-library-book-btn').click(function () {
 
             var selectedLibraryBookId = $(this).val();
-            var selectedLibraryBookModalId = "#edit-library-book-rental-modal-" + selectedLibraryBookId;
+            var selectedLibraryBookModalId = "#library-book-rental-modal-" + selectedLibraryBookId;
 
             $(selectedLibraryBookModalId).modal('show');
         });
@@ -109,7 +109,9 @@
             }
         });
 
-        $('#new-book-rental-class').change(function () {
+        $('.library-book-rental-class').change(function () {
+
+            var bookID = $(this).attr('attr-bookid');
 
             var classId = $(this).val();
             var options = '<option selected>Select a student...</option>';
@@ -120,7 +122,7 @@
                     options += '<option value="' + obj.id + '">' + obj.name + '</option>';
                 });
 
-                $('#new-book-rental-student').html(options);
+                $('#library-book-rental-student-' + bookID).html(options);
             });
         });
 

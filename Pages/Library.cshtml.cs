@@ -48,6 +48,9 @@ namespace Marinel_ui.Pages
                 case "edit-library-book":
                     UpdateLibraryBook();
                     break;
+                case "library-book-rental":
+                    AddLibraryBookRental();
+                    break;
                 default:
                     break;
             }
@@ -68,6 +71,14 @@ namespace Marinel_ui.Pages
             lb.Quantity = Int32.Parse(b_Quantity);
 
             _schoolRepository.AddLibraryBook(lb);
+        }
+
+        private void AddLibraryBookRental()
+        {
+            var formIDString = Request.Form[$"form-id"].ToString();
+
+            var br_StudentID = Request.Form[$"library-book-rental-student-" + formIDString].ToString();
+            var br_RentalDate = Request.Form[$"library-book-rental-date-" + formIDString].ToString();
         }
 
         private void UpdateLibraryBook()
