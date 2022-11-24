@@ -130,6 +130,7 @@ namespace Marinel_ui.Pages
             uniformSale.StudentId = parsedStudentId;
             uniformSale.PaidInFull = u_Paid == "y";
             uniformSale.Received = u_Received == "y";
+            uniformSale.Notes = string.Empty;
 
             _schoolRepository.AddUniformSale(uniformSale);
         }
@@ -193,6 +194,7 @@ namespace Marinel_ui.Pages
             pAndCUniformSale.PaidInFull = paid;
             pAndCUniformSale.Received = received;
             pAndCUniformSale.SeamstressPaid = seamstressPaid;
+            pAndCUniformSale.Notes = string.Empty;
 
             _schoolRepository.AddPandCUniformSale(pAndCUniformSale);
         }
