@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Marinel_ui.Helpers;
 
 namespace Marinel_ui.Pages
 {
@@ -19,6 +20,7 @@ namespace Marinel_ui.Pages
         private readonly ILogger<LibraryPageModel> _logger;
         private readonly ISchoolRepository _schoolRepository;
 
+        public List<LibraryBookRental> LibraryBookRentals { get; set; }
         public List<LibraryBook> LibraryBooks { get; set; }
         public List<Class> Classes { get; set; }
 
@@ -51,6 +53,9 @@ namespace Marinel_ui.Pages
                 case "library-book-rental":
                     AddLibraryBookRental();
                     break;
+                case "edit-library-rental":
+                    UpdateLibraryBookRental();
+                    break;
                 default:
                     break;
             }
@@ -76,9 +81,23 @@ namespace Marinel_ui.Pages
         private void AddLibraryBookRental()
         {
             var formIDString = Request.Form[$"form-id"].ToString();
+            const long borrowDate = 14;
 
             var br_StudentID = Request.Form[$"library-book-rental-student-" + formIDString].ToString();
             var br_RentalDate = Request.Form[$"library-book-rental-date-" + formIDString].ToString();
+
+            var parsedRentedDate = DateTimeHelper.ToDayMonthYear(br_RentalDate);
+            var expextedReturnDate = parsedRentedDate.AddDays(borrowDate);
+
+            var libraryBookRental = new LibraryBookRental()
+            {
+                LibraryBookId = Int32.Parse(formIDString),
+                StudentId = Int32.Parse(br_StudentID),
+                RentedDate = parsedRentedDate,
+                ExpextedReturnDate = expextedReturnDate
+            };
+
+            _schoolRepository.AddLibraryBookRental(libraryBookRental);
         }
 
         private void UpdateLibraryBook()
@@ -98,9 +117,25 @@ namespace Marinel_ui.Pages
             _schoolRepository.UpdateLibraryBook(lb);
         }
 
+        private void UpdateLibraryBookRental()
+        {
+            var formIDString = Request.Form[$"form-id"].ToString();
+            var libraryBookRentalId = Int32.Parse(formIDString);
+
+            var rental_ReturnDate = Request.Form[$"edit-library-rental-actual-return-date-{formIDString}"].ToString();
+            var parsedReturnDate = DateTimeHelper.ToDayMonthYear(rental_ReturnDate);
+
+            var libraryRental = _schoolRepository.GetAllLibraryBookRentals().FirstOrDefault(lbr => lbr.Id == libraryBookRentalId);
+            libraryRental.ActualReturnDate = parsedReturnDate;
+
+            _schoolRepository.UpdateLibraryBookRental(libraryRental);
+        }
+
+
         private async Task GetPageData()
         {
             LibraryBooks = _schoolRepository.GetAllLibraryBook().ToList();
+            LibraryBookRentals = _schoolRepository.GetAllLibraryBookRentals().ToList();
             Classes = _schoolRepository.GetAllClasses().ToList();
         }
 

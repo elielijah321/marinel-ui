@@ -20,7 +20,7 @@
             <partial name="LibraryBook/_LibraryBookList" model="@Model" />
         </div>
         <div class="tab-pane fade" id="v-pills-rentals" role="tabpanel" aria-labelledby="v-pills-rentals-tab">
-            Rentals
+            <partial name="LibraryBook/_LibraryBookRentalList" model="@Model" />
         </div>
     </div>
 </div>
@@ -69,6 +69,22 @@
             var selectedLibraryBookModalId = "#edit-library-book-modal-" + selectedLibraryBookId;
 
             $(selectedLibraryBookModalId).modal('show');
+        });
+
+        $('.edit-library-book-submit-btn').click(function () {
+
+            var formId = $(this).val();
+
+            var titleFieldVal = $('#library-book-title-' + formId).val();
+            var authorFieldVal = $('#library-book-author-' + formId).val();
+            var quantityFieldVal = $('#library-book-quantity-' + formId).val();
+
+            if (titleFieldVal.length > 0 && authorFieldVal.length > 0 && quantityFieldVal.length > 0 && parseInt(quantityFieldVal) > 0) {
+                $('#edit-library-book-form-' + formId).submit();
+
+            } else {
+                alert('Error: Must Enter all fields');
+            }
         });
 
         $('.library-book-rental-submit-btn').click(function () {
@@ -124,6 +140,30 @@
 
                 $('#library-book-rental-student-' + bookID).html(options);
             });
+        });
+
+        // Library Book Rental
+
+        $('.edit-library-rental-btn').click(function () {
+
+            var selectedLibraryBookRentalId = $(this).val();
+            var selectedLibraryBookRentalModalId = "#edit-library-rental-modal-" + selectedLibraryBookRentalId;
+
+            $(selectedLibraryBookRentalModalId).modal('show');
+        });
+
+        $('.edit-library-rental-submit-btn').click(function () {
+
+            var formId = $(this).val();
+
+            var actualReturnDateFieldVal = $('#edit-library-rental-actual-return-date-' + formId).val();
+
+            if (actualReturnDateFieldVal.length > 0) {
+                $('#edit-library-rental-form-' + formId).submit();
+
+            } else {
+                alert('Error: Must Enter all fields');
+            }
         });
 
 
