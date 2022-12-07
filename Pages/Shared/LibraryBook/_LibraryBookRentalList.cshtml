@@ -75,7 +75,7 @@
                             @*Actual Return Date*@
                             <div class="form-group">
                                 <label for="edit-library-rental-actual-return-date-@_rental.Id" class="form-label">Actual Return Date</label>
-                                <input type="date" class="form-control" id="edit-library-rental-actual-return-date-@_rental.Id" name="edit-library-rental-actual-return-date-@_rental.Id">
+                                <input type="date" class="form-control" id="edit-library-rental-actual-return-date-@_rental.Id" name="edit-library-rental-actual-return-date-@_rental.Id" value="@DateTimeHelper.ToYearMonthDay(_rental.ActualReturnDate)">
                             </div>
 
                         </form>
