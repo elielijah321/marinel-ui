@@ -1,0 +1,101 @@
+﻿@using Marinel_ui.Helpers;
+
+@model Marinel_ui.Pages.LibraryPageModel
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Student</th>
+            <th scope="col">Title</th>
+            <th scope="col">Rented Date</th>
+            <th scope="col">Expected Return Date</th>
+            <th scope="col">Actual Return Date</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var _rental in Model.LibraryBookRentals)
+            {
+                <tr>
+                    <td>@_rental.Student.Name</td>
+                    <td>@_rental.LibraryBook.Title</td>
+                    <td>@DateTimeHelper.ToDayMonthYear(_rental.RentedDate)</td>
+                    <td>@DateTimeHelper.ToDayMonthYear(_rental.ExpextedReturnDate)</td>
+                    <td>@DateTimeHelper.ToDayMonthYear(_rental.ActualReturnDate)</td>
+                    <td>
+                        <button type="button" class="btn btn-warning edit-library-rental-btn" value="@_rental.Id">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+@{
+    foreach (var _rental in Model.LibraryBookRentals)
+    {
+        <div id="edit-library-rental-modal-@_rental.Id" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit library rental</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-library-rental-form-@_rental.Id" method="post">
+
+                            <input type="hidden" name="form-type" value="edit-library-rental" />
+                            <input type="hidden" name="form-id" value="@_rental.Id" />
+
+                            @*Student*@
+                            <div class="form-group">
+                                <label class="form-label">Student: @_rental.Student.Name</label>
+                            </div>
+
+                            @*Title*@
+                            <div class="form-group">
+                                <label class="form-label">Book Title: @_rental.LibraryBook.Title</label>
+                            </div>
+
+                            @*Rented Date*@
+                            <div class="form-group">
+                                <label class="form-label">Rented Date: @DateTimeHelper.ToDayMonthYear(_rental.RentedDate)</label>
+                            </div>
+
+                            @*Expected Return Date*@
+                            <div class="form-group">
+                                <label for="edit-library-rental-expected-return-date-@_rental.Id" class="form-label">Expected Return Date</label>
+                                <input type="date" class="form-control" id="edit-library-rental-expected-return-date-@_rental.Id" name="edit-library-rental-expected-return-date-@_rental.Id" value="@DateTimeHelper.ToYearMonthDay(_rental.ExpextedReturnDate)">
+                            </div>
+
+                            @*Actual Return Date*@
+                            <div class="form-group">
+                                <label for="edit-library-rental-actual-return-date-@_rental.Id" class="form-label">Actual Return Date</label>
+                                <input type="date" class="form-control" id="edit-library-rental-actual-return-date-@_rental.Id" name="edit-library-rental-actual-return-date-@_rental.Id" value="@DateTimeHelper.ToYearMonthDay(_rental.ActualReturnDate)">
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <div style="width:100%;">
+
+                            <div style="float:right;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary edit-library-rental-submit-btn" value="@_rental.Id">Save changes</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+}

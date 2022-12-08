@@ -1,0 +1,55 @@
+﻿@page "{handler?}"
+@model DocumentsPageModel
+@{
+    ViewData["Title"] = "Documents";
+}
+<h1>@ViewData["Title"]</h1>
+
+<div class="d-flex align-items-start">
+    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <button class="nav-link active" id="v-pills-books-tab" data-bs-toggle="pill" data-bs-target="#v-pills-books" type="button" role="tab" aria-controls="v-pills-books" aria-selected="false">
+            Receipts
+        </button>
+        <button class="nav-link" id="v-pills-rentals-tab" data-bs-toggle="pill" data-bs-target="#v-pills-rentals" type="button" role="tab" aria-controls="v-pills-rentals" aria-selected="false">
+            Documents
+        </button>
+    </div>
+
+    <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade show active" id="v-pills-books" role="tabpanel" aria-labelledby="v-pills-books-tab">
+            <partial name="Document/_DocumentList" model="@Model" />
+        </div>
+        <div class="tab-pane fade" id="v-pills-rentals" role="tabpanel" aria-labelledby="v-pills-rentals-tab">
+            Documents
+
+            @*  *@
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+<script>
+    $(function () {
+
+        $('#newDocumentBtn').click(function () {
+            $('#new-document-modal').modal('show');
+        });
+
+        $('#new-document-submit-btn').click(function () {
+
+            var documentNameFieldVal = $('#document-name').val();
+            var documentFileFieldVal = $('#file').val();
+
+            if (documentNameFieldVal.length > 0 && documentFileFieldVal.length > 0) {
+                $('#new-document-form').submit();
+            } else {
+                alert('Error: Must Enter all fields');
+            }
+        });
+
+
+    });
+</script>
+
+}
