@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace Marinel_ui.Services
 {
@@ -9,6 +10,8 @@ namespace Marinel_ui.Services
         public IConfiguration _configuration { get; }
 
         private const string ContainerName = "documents";
+        private const string MetaDataKey = "DocumentType";
+
         private BlobContainerClient _blobContainerClient { get; set; }
 
 
@@ -23,8 +26,17 @@ namespace Marinel_ui.Services
 
         public async void AddFile(IFormFile file, string prefferedName)
         {
-            var fileName = GetFileName(file.FileName, prefferedName);
+            var fileName = CreateFileName(file.FileName, prefferedName);
             var blob = _blobContainerClient.GetBlobClient(fileName);
+
+            var tag = new Dictionary<string, string>();
+
+            tag.Add(MetaDataKey, "Receipts");
+
+            var blobOptions = new BlobUploadOptions()
+            {
+                Metadata = tag
+            };
 
             if (file != null)
             {
@@ -32,13 +44,13 @@ namespace Marinel_ui.Services
                 {
                     file.CopyTo(ms);
                     ms.Position = 0;
-                    await blob.UploadAsync(ms);
+                    await blob.UploadAsync(ms, blobOptions);
                 }
             }
         }
 
 
-        private string GetFileName(string fileName, string prefferedName)
+        private string CreateFileName(string fileName, string prefferedName)
         {
             var extension = fileName.Split(".")[1];
             var result = $"{prefferedName}.{extension}";
