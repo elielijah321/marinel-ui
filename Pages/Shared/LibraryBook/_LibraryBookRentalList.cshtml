@@ -17,11 +17,11 @@
         @{
             foreach (var _rental in Model.LibraryBookRentals)
             {
-                <tr>
+                <tr id="library-rental-row-@_rental.Id">
                     <td>@_rental.Student.Name</td>
                     <td>@_rental.LibraryBook.Title</td>
                     <td>@DateTimeHelper.ToDayMonthYear(_rental.RentedDate)</td>
-                    <td>@DateTimeHelper.ToDayMonthYear(_rental.ExpextedReturnDate)</td>
+                    <td class="library-rental-expected-return-date">@DateTimeHelper.ToDayMonthYear(_rental.ExpextedReturnDate)</td>
                     <td>@DateTimeHelper.ToDayMonthYear(_rental.ActualReturnDate)</td>
                     <td>
                         <button type="button" class="btn btn-warning edit-library-rental-btn" value="@_rental.Id">
