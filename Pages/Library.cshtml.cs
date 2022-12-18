@@ -122,10 +122,14 @@ namespace Marinel_ui.Pages
             var formIDString = Request.Form[$"form-id"].ToString();
             var libraryBookRentalId = Int32.Parse(formIDString);
 
+            var rental_ExpectedReturnDate = Request.Form[$"edit-library-rental-expected-return-date-{formIDString}"].ToString();
             var rental_ReturnDate = Request.Form[$"edit-library-rental-actual-return-date-{formIDString}"].ToString();
-            var parsedReturnDate = DateTimeHelper.ToDayMonthYear(rental_ReturnDate);
+
+            var parsedExpectedReturnDate = DateTimeHelper.ToDayMonthYear(rental_ExpectedReturnDate);
+            var parsedReturnDate = string.IsNullOrEmpty(rental_ReturnDate) ? (DateTime?)null : DateTimeHelper.ToDayMonthYear(rental_ReturnDate);
 
             var libraryRental = _schoolRepository.GetAllLibraryBookRentals().FirstOrDefault(lbr => lbr.Id == libraryBookRentalId);
+            libraryRental.ExpextedReturnDate = parsedExpectedReturnDate;
             libraryRental.ActualReturnDate = parsedReturnDate;
 
             _schoolRepository.UpdateLibraryBookRental(libraryRental);
