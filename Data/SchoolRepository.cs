@@ -98,6 +98,10 @@ namespace Marinel_ui.Data
             return _ctx.LibraryBooks.ToList();
         }
 
+        public IEnumerable<LibraryBookRental> GetAllLibraryBookRentals()
+        {
+            return _ctx.LibraryBookRentals.ToList();
+        }
 
         // Add
 
@@ -195,6 +199,12 @@ namespace Marinel_ui.Data
         public void AddLibraryBook(LibraryBook libraryBook)
         {
             _ctx.LibraryBooks.Add(libraryBook);
+            SaveAll();
+        }
+
+        public void AddLibraryBookRental(LibraryBookRental libraryBookRental)
+        {
+            _ctx.LibraryBookRentals.Add(libraryBookRental);
             SaveAll();
         }
 
@@ -355,6 +365,18 @@ namespace Marinel_ui.Data
             SaveAll(); 
         }
 
+        public void UpdateLibraryBookRental(LibraryBookRental libraryBookRental)
+        {
+            var _libraryBookRental = _ctx.LibraryBookRentals.FirstOrDefault(lbr => lbr.Id == libraryBookRental.Id);
+
+            _libraryBookRental.StudentId = libraryBookRental.StudentId;
+            _libraryBookRental.RentedDate = libraryBookRental.RentedDate;
+            _libraryBookRental.ExpextedReturnDate = libraryBookRental.ExpextedReturnDate;
+            _libraryBookRental.ActualReturnDate = libraryBookRental.ActualReturnDate;
+
+            SaveAll();
+        }
+
         public void RemoveTeacher(int teacherID)
         {
             var teacher = _ctx.Teachers.FirstOrDefault(t => t.Id == teacherID);
@@ -368,5 +390,7 @@ namespace Marinel_ui.Data
         {
             return _ctx.SaveChanges() > 0;
         }
+
+       
     }
 }

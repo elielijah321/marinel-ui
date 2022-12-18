@@ -16,14 +16,23 @@
         @{
             foreach (var _book in Model.LibraryBooks)
             {
+
+                var available = Model.LibraryBookRentals.Where(r => r.LibraryBookId == _book.Id).Count(r => !r.ActualReturnDate.HasValue) < _book.Quantity;
+
                 <tr>
                     <td>@_book.Title</td>
                     <td>@_book.Author</td>
                     <td>@_book.Quantity</td>
                     <td>
-                        <button type="button" class="btn btn-primary rent-library-book-btn" value="@_book.Id">
-                            Rent
-                        </button>
+                        @{
+                            if (available)
+                            {
+                                <button type="button" class="btn btn-primary rent-library-book-btn" value="@_book.Id">
+                                    Rent
+                                </button>
+                            }
+
+                        }
                     </td>
                     <td>
                         <button type="button" class="btn btn-warning edit-library-book-btn" value="@_book.Id">
@@ -179,6 +188,5 @@
                 </div>
             </div>
         </div>
-
     }
 }

@@ -10,6 +10,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<SchoolContext>();
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 builder.Services.AddSingleton<IMSGraphService, MSGraphService>();
+builder.Services.AddSingleton<IAZContainerService, AZContainerService>();
 
 var instance = Environment.GetEnvironmentVariable("Instance") ?? builder.Configuration["Instance"];
 var domain = Environment.GetEnvironmentVariable("Domain") ?? builder.Configuration["Domain"];

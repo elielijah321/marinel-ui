@@ -33,6 +33,7 @@ namespace Marinel_ui.Data
         public DbSet<Expense> Expenses { get; set; }
 
         public DbSet<LibraryBook> LibraryBooks { get; set; }
+        public DbSet<LibraryBookRental> LibraryBookRentals { get; set; }
 
         public SchoolContext(IConfiguration config, IWebHostEnvironment env)
         {

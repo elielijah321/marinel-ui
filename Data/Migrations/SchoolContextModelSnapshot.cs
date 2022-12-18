@@ -462,6 +462,38 @@ namespace Marinel.Migrations
                     b.ToTable("LibraryBooks");
                 });
 
+            modelBuilder.Entity("Marinel_ui.Data.Entities.LibraryBookRental", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("ActualReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpextedReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LibraryBookId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RentedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LibraryBookId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("LibraryBookRentals");
+                });
+
             modelBuilder.Entity("Marinel_ui.Data.Entities.PandCUniformSale", b =>
                 {
                     b.Property<int>("Id")
@@ -844,6 +876,25 @@ namespace Marinel.Migrations
                         .IsRequired();
 
                     b.Navigation("InventoryType");
+                });
+
+            modelBuilder.Entity("Marinel_ui.Data.Entities.LibraryBookRental", b =>
+                {
+                    b.HasOne("Marinel_ui.Data.Entities.LibraryBook", "LibraryBook")
+                        .WithMany()
+                        .HasForeignKey("LibraryBookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Marinel_ui.Data.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LibraryBook");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Marinel_ui.Data.Entities.PandCUniformSale", b =>
