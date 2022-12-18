@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Marinel_ui.Models;
+using Azure;
+using System.Reflection.Metadata;
 
 namespace Marinel_ui.Services
 {
@@ -40,15 +43,35 @@ namespace Marinel_ui.Services
 
             if (file != null)
             {
-                using (var ms = new MemoryStream())
+                try
                 {
-                    file.CopyTo(ms);
-                    ms.Position = 0;
-                    await blob.UploadAsync(ms, blobOptions);
+                    using (var ms = new MemoryStream())
+                    {
+                        file.CopyTo(ms);
+                        ms.Position = 0;
+                        await blob.UploadAsync(ms, blobOptions);
+                    }
+                }
+                catch (Exception ex)
+                {
+
                 }
             }
         }
 
+        public List<DocumentModel> GetFiles()
+        {
+            var blobs = _blobContainerClient.GetBlobs(BlobTraits.Metadata);
+
+            List<DocumentModel> documents = new List<DocumentModel>();
+
+            foreach (var blob in blobs)
+            {
+                documents.Add(CreateDocumentModel(blob));
+            }
+
+            return documents;
+        }
 
         private string CreateFileName(string fileName, string prefferedName)
         {
@@ -58,6 +81,39 @@ namespace Marinel_ui.Services
             return result;
         }
 
+
+        private DocumentModel CreateDocumentModel(BlobItem blobItem)
+        {
+            var document = new DocumentModel();
+            document.Id = blobItem.Properties.ETag.ToString();
+            document.Name = blobItem.Name;
+            document.CreatedAt = blobItem.Properties.CreatedOn.Value.Date;
+            document.DocumentType = blobItem.Metadata[MetaDataKey];
+
+            return document;
+        }
+
+
+        public void DownloadDocument(string documentName)
+        {
+            BlobClient blob = _blobContainerClient.GetBlobClient(documentName);
+
+            string strPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
+            var pathToDownload = $"/{strPath}/{documentName}";
+
+            Response<BlobDownloadInfo> download = blob.Download();
+            using (FileStream file = File.OpenWrite(pathToDownload))
+            {
+                download.Value.Content.CopyTo(file);
+            }
+        }
+
+        public void DeleteDocument(string documentName)
+        {
+            BlobClient blob = _blobContainerClient.GetBlobClient(documentName);
+
+            blob.Delete();
+        }
     }
 }
 

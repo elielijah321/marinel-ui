@@ -32,6 +32,25 @@
 <script>
     $(function () {
 
+
+        $.fn.dowloadDocument = function (documentName) {
+
+            return $.ajax({
+                type: "GET",
+                url: "/Documents/DownloadDocumentByName",
+                data: { documentName: documentName }
+            });
+        }
+
+        $.fn.deleteDocument = function (documentName) {
+
+            return $.ajax({
+                type: "GET",
+                url: "/Documents/DeleteDocumentByName",
+                data: { documentName: documentName }
+            });
+        }
+
         $('#newDocumentBtn').click(function () {
             $('#new-document-modal').modal('show');
         });
@@ -48,6 +67,23 @@
             }
         });
 
+        $('.download-document-btn').click(function () {
+
+            var selectedDocumentName = $(this).val();
+
+            $.when($.fn.dowloadDocument(selectedDocumentName)).done(function (response) {
+                alert(response);
+            });
+        });
+
+        $('.delete-document-btn').click(function () {
+
+            var selectedDocumentName = $(this).val();
+
+            $.when($.fn.deleteDocument(selectedDocumentName)).done(function (response) {
+                alert(response);
+            });
+        });
 
     });
 </script>

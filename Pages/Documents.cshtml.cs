@@ -12,9 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Marinel_ui.Helpers;
-
-
-
+using Marinel_ui.Models;
 
 namespace Marinel_ui.Pages
 {
@@ -24,6 +22,9 @@ namespace Marinel_ui.Pages
         private readonly ISchoolRepository _schoolRepository;
 
         private readonly IAZContainerService _aZContainerService;
+
+
+        public List<DocumentModel> Documents { get; set; }
 
         public DocumentsPageModel(ISchoolRepository schoolRepo, IAZContainerService aZContainerService,  ILogger<DocumentsPageModel> logger)
         {
@@ -59,7 +60,7 @@ namespace Marinel_ui.Pages
 
         private async Task GetPageData()
         {
-
+            Documents =  _aZContainerService.GetFiles();
         }
 
 
@@ -68,6 +69,21 @@ namespace Marinel_ui.Pages
             var d_Name = Request.Form["document-name"].ToString();
 
             _aZContainerService.AddFile(file, d_Name);
+        }
+
+
+        public JsonResult OnGetDownloadDocumentByName(string documentName)
+        {
+            _aZContainerService.DownloadDocument(documentName);
+
+            return new JsonResult("Ok");
+        }
+
+        public JsonResult OnGetDeleteDocumentByName(string documentName)
+        {
+            _aZContainerService.DeleteDocument(documentName);
+
+            return new JsonResult("Ok");
         }
     }
 }

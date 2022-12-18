@@ -1,5 +1,8 @@
 ﻿@model Marinel_ui.Pages.DocumentsPageModel
 
+@using Marinel_ui.Helpers;
+
+
 <button id="newDocumentBtn" type="button" class="btn btn-success">Add New Document</button>
 
 <div id="new-document-modal" class="modal" tabindex="-1">
@@ -23,7 +26,7 @@
                     @*File*@
                     <div class="form-group">
                         <label for="library-book-author" class="form-label">File</label>
-                        <input type="file" class="form-control" id="file" name="file" accept="image/*">
+                        <input type="file" class="form-control" id="file" name="file" accept="image/*,application/pdf">
                     </div>
 
                 </form>
@@ -36,4 +39,36 @@
     </div>
 </div>
 
-
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Document Type</th>
+            <th scope="col">Created At</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var _document in Model.Documents)
+            {
+                <tr>
+                    <td>@_document.Name</td>
+                    <td>@_document.DocumentType</td>
+                    <td>@DateTimeHelper.ToDayMonthYear(_document.CreatedAt)</td>
+                    <td>
+                        <button type="button" class="btn btn-warning download-document-btn" value="@_document.Name">
+                            Download
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger delete-document-btn" value="@_document.Name">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
