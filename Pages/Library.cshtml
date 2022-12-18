@@ -30,8 +30,9 @@
 <script>
     $(function () {
 
-        var todaysDate = new Date().toISOString().split('T')[0];
-        $('.library-book-rental-date').val(todaysDate);
+        var todaysDate = new Date();
+        var todaysDateString = todaysDate.toISOString().split('T')[0];
+        $('.library-book-rental-date').val(todaysDateString);
 
         $.fn.getStudents = function (classId) {
 
@@ -43,11 +44,22 @@
         }
 
         // Library Book
+        $('.library-rental-expected-return-date').each(function () {
 
+            var rental = $(this);
 
-        var t = $('.library-rental-expected-return-date')
+            var rentalId = rental.data("id");
+            var dateValue = rental.data("expected-return-date");
+            var row = $("#library-rental-row-" + rentalId);
 
-        console.log(t);
+            var rentalDate = new Date(dateValue).setHours(0, 0, 0, 0);
+            var todayNumeric = todaysDate.setHours(0, 0, 0, 0);
+
+            if (rentalDate <= todayNumeric) {
+                row.addClass("overdue");
+            }
+        });
+
 
         $('#newLibraryBookBtn').click(function () {
             $('#new-library-book-modal').modal('show');
@@ -161,9 +173,9 @@
 
             var formId = $(this).val();
 
-            var actualReturnDateFieldVal = $('#edit-library-rental-actual-return-date-' + formId).val();
+            var expectedReturnDateFieldVal = $('#edit-library-rental-expected-return-date-' + formId).val();
 
-            if (actualReturnDateFieldVal.length > 0) {
+            if (expectedReturnDateFieldVal.length > 0) {
                 $('#edit-library-rental-form-' + formId).submit();
 
             } else {
