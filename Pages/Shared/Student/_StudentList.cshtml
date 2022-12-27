@@ -1,4 +1,6 @@
 ﻿@model Marinel_ui.Pages.SettingsPageModel
+@using Marinel_ui.Data.Enums;
+@using Marinel_ui.Helpers;
 
 <button id="newStudentBtn" type="button" class="btn btn-success">Add New Student</button>
 
@@ -7,6 +9,7 @@
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Class</th>
+            <th scope="col">Scholarship Type</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -17,6 +20,12 @@
                 <tr>
                     <td>@student.Name</td>
                     <td>@student.Class.Name</td>
+                    <td>
+                        @{
+                            var scholarshipDescription = Enum.TryParse(student.ScholarshipType, true, out ScholarshipType scholarshipType) ? EnumHelper.GetEnumDescription(scholarshipType) : "";
+                            <span>@scholarshipDescription</span>
+                        }
+                    </td>
                     <td>
                         <button type="button" class="btn btn-warning edit-student-btn" value="@student.Id">
                             Edit
@@ -53,6 +62,19 @@
                                 foreach (var student_class in Model.Classes)
                                 {
                                     <option value="@student_class.Name">@student_class.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="student-scholarship-ddl" class="form-label">Scholarship</label>
+                        <select id="student-scholarship-ddl" name="student-scholarship-ddl" class="form-select" aria-label="student-scholarship-ddl">
+                            @{
+                                <option value="Select Scholarship...">Select Scholarship...</option>
+                                @foreach (var _scholarship in Enum.GetValues(typeof(ScholarshipType)).Cast<ScholarshipType>())
+                                {
+                                    <option value="@_scholarship">@EnumHelper.GetEnumDescription(_scholarship)</option>
                                 }
                             }
                         </select>
@@ -95,6 +117,7 @@
                                 <select id="student-class-ddl-@student.Id" name="student-class-ddl-@student.Id" class="form-select" aria-label="student-class-ddl-@student.Id">
                                     @{
                                         <option value="Select Class...">Select Class...</option>
+                                       
                                         @foreach (var _class in Model.Classes)
                                         {
                                             if (student.ClassId == _class.Id)
@@ -109,6 +132,28 @@
                                     }
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label for="student-scholarship-ddl-@student.Id" class="form-label">Scholarship Type</label>
+                                <select id="student-scholarship-ddl-@student.Id" name="student-scholarship-ddl-@student.Id" class="form-select" aria-label="student-scholarship-ddl-@student.Id">
+                                    @{
+                                        <option value="Select Scholarship...">Select Scholarship...</option>
+                                        @foreach (var _scholarship in Enum.GetValues(typeof(ScholarshipType)).Cast<ScholarshipType>())
+                                        {
+                                            if (student.ScholarshipType == _scholarship.ToString())
+                                            {
+                                                <option value="@_scholarship" selected>@EnumHelper.GetEnumDescription(_scholarship)</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@_scholarship">@EnumHelper.GetEnumDescription(_scholarship)</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+
                         </form>
                     </div>
                     <div class="modal-footer">

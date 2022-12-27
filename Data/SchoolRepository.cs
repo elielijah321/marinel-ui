@@ -216,6 +216,7 @@ namespace Marinel_ui.Data
 
             _student.Name = student.Name;
             _student.ClassId = student.ClassId;
+            _student.ScholarshipType = student.ScholarshipType;
 
             SaveAll();
         }

@@ -105,12 +105,14 @@ namespace Marinel_ui.Pages
         {
             var s_Name = Request.Form["studentName"].ToString();
             var s_Class = Request.Form["studentClass"].ToString();
+            var s_Scholarship = Request.Form[$"student-scholarship-ddl"].ToString();
 
             var studentClass = Classes.FirstOrDefault(c => c.Name == s_Class);
 
             var student = new Student();
             student.Name = s_Name;
             student.Class = studentClass;
+            student.ScholarshipType = s_Scholarship != "Select Scholarship..." ? s_Scholarship : null;
 
             _schoolRepository.AddStudent(student);
         }
@@ -119,16 +121,17 @@ namespace Marinel_ui.Pages
         {
             var formIDString = Request.Form[$"form-id"].ToString();
 
-            var t_Name = Request.Form[$"student-name-{formIDString}"].ToString();
-            var t_Class = Request.Form[$"student-class-ddl-{formIDString}"].ToString();
+            var s_Name = Request.Form[$"student-name-{formIDString}"].ToString();
+            var s_Class = Request.Form[$"student-class-ddl-{formIDString}"].ToString();
+            var s_Scholarship = Request.Form[$"student-scholarship-ddl-{formIDString}"].ToString();
 
-            var studentClass = Classes.FirstOrDefault(c => c.Id.ToString() == t_Class);
-
+            var studentClass = Classes.FirstOrDefault(c => c.Id.ToString() == s_Class);
 
             var student = new Student();
             student.Id = Int32.Parse(formIDString);
-            student.Name = t_Name;
+            student.Name = s_Name;
             student.ClassId = studentClass.Id;
+            student.ScholarshipType = s_Scholarship != "Select Scholarship..." ? s_Scholarship : null; ;
 
             _schoolRepository.UpdateStudent(student);
         }
