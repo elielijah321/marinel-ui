@@ -71,14 +71,6 @@ namespace Marinel_ui.Pages
             _aZContainerService.AddFile(file, d_Name);
         }
 
-
-        public JsonResult OnGetDownloadDocumentByName(string documentName)
-        {
-            _aZContainerService.DownloadDocument(documentName);
-
-            return new JsonResult("Ok");
-        }
-
         public JsonResult OnGetDeleteDocumentByName(string documentName)
         {
             _aZContainerService.DeleteDocument(documentName);

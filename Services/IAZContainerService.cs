@@ -8,7 +8,6 @@ namespace Marinel_ui.Services
     {
         void AddFile(IFormFile file, string prefferedName);
         List<DocumentModel> GetFiles();
-        void DownloadDocument(string documentName);
         void DeleteDocument(string documentName);
     }
 }

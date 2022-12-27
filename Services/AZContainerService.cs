@@ -92,70 +92,9 @@ namespace Marinel_ui.Services
             document.Name = blobItem.Name;
             document.CreatedAt = blobItem.Properties.CreatedOn.Value.Date;
             document.DocumentType = blobItem.Metadata[MetaDataKey];
+            document.URL = $"{_blobContainerClient.Uri}/{document.Name}";
 
             return document;
-        }
-
-
-        public async void DownloadDocument(string documentName)
-        {
-            BlobClient blob = _blobContainerClient.GetBlobClient(documentName);
-
-            string strPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
-            var pathToDownload = $"/{strPath}/{documentName}";
-
-
-            /*
-            Response<BlobDownloadInfo> download = blob.Download();
-            using (FileStream file = File.OpenWrite(pathToDownload))
-            {
-              download.Value.Content.CopyTo(file);
-            }
-
-            */
-
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", documentName);
-           
-
-
-            //HttpClient httpClient = new HttpClient();
-            using (Stream stream = blob.DownloadStreaming().Value.Content)
-            {
-                using (FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
-                {
-                    stream.CopyTo(fileStream);
-                }
-            }
-
-             
-
-
-
-
-            //WebClient webClient = new WebClient();
-
-            // webClient.DownloadFile("https://marineldev.blob.core.windows.net/documents/CarImage.jpg", documentName);
-
-
-
-
-
-
-
-            /*
-
-            var httpClient = new HttpClient();
-
-            using (var stream = await httpClient.GetStreamAsync("https://marineldev.blob.core.windows.net/documents/CarImage.jpg"))
-            {
-                using (var fileStream = new FileStream(documentName, FileMode.CreateNew))
-                {
-                    await stream.CopyToAsync(fileStream);
-                }
-            }
-
-            */
-
         }
 
         public void DeleteDocument(string documentName)
