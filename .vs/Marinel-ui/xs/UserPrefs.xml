@@ -1,36 +1,38 @@
-﻿<Properties GitUserInfo="UsingGIT" StartupConfiguration="{FDF6F023-1F28-4C1E-B1C1-2C678F4D4792}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.Marinel-ui PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/elijah/Projects/marinel-ui/Pages/BookChart.cshtml.cs" relfile="Pages/BookChart.cshtml.cs" line="71" column="1" />
-    </BreakpointStore>
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Pages/Shared/LibraryBook/_LibraryBookRentalList.cshtml">
+﻿<Properties StartupConfiguration="{FDF6F023-1F28-4C1E-B1C1-2C678F4D4792}|Default" GitUserInfo="UsingGIT">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Pages/Documents.cshtml">
     <Files>
-      <File FileName="Pages/Shared/Document/_DocumentList.cshtml" />
-      <File FileName="Pages/Documents.cshtml.cs" Line="67" Column="1" />
-      <File FileName="Pages/Shared/LibraryBook/_LibraryBookRentalList.cshtml" Line="24" Column="32" />
-      <File FileName="Pages/Library.cshtml" Line="50" Column="22" />
+      <File FileName="Pages/Documents.cshtml" Line="84" Column="33" />
+      <File FileName="Pages/Shared/Document/_DocumentList.cshtml" Line="66" Column="112" />
+      <File FileName="Pages/Documents.cshtml.cs" Line="84" Column="47" />
+      <File FileName="Services/AZContainerService.cs" Line="117" Column="6" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Marinel-ui" expanded="True">
             <Node name="Marinel-ui" expanded="True">
+              <Node name="Models" expanded="True" />
               <Node name="Pages" expanded="True">
                 <Node name="Shared" expanded="True">
-                  <Node name="LibraryBook" expanded="True" />
+                  <Node name="Document" expanded="True" />
                 </Node>
                 <Node name="Documents.cshtml" expanded="True" />
-                <Node name="Library.cshtml" expanded="True" selected="True" />
+                <Node name="Library.cshtml" expanded="True" />
               </Node>
+              <Node name="Services" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/elijah/Projects/marinel-ui/Pages/BookChart.cshtml.cs" relfile="Pages/BookChart.cshtml.cs" line="71" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Marinel-ui PreferredExecutionTarget="/Applications/Google Chrome.app" />
 </Properties>

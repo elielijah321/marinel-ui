@@ -5,6 +5,9 @@ using Azure.Storage.Blobs.Models;
 using Marinel_ui.Models;
 using Azure;
 using System.Reflection.Metadata;
+using System.Net;
+using System.Net.Http;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Marinel_ui.Services
 {
@@ -101,11 +104,26 @@ namespace Marinel_ui.Services
             string strPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
             var pathToDownload = $"/{strPath}/{documentName}";
 
+
+            /*
             Response<BlobDownloadInfo> download = blob.Download();
             using (FileStream file = File.OpenWrite(pathToDownload))
             {
-                download.Value.Content.CopyTo(file);
+              download.Value.Content.CopyTo(file);
             }
+
+            */
+
+
+            //HttpClient httpClient = new HttpClient();
+            using (Stream stream = blob.DownloadStreaming().Value.Content)
+            {
+                using (FileStream fileStream = new FileStream(pathToDownload, FileMode.Create, FileAccess.Write))
+                {
+                    stream.CopyTo(fileStream);
+                }
+            }
+
         }
 
         public void DeleteDocument(string documentName)
