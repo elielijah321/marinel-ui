@@ -30,14 +30,13 @@ namespace Marinel_ui.Services
 
         }
 
-        public async void AddFile(IFormFile file, string prefferedName)
+        public async void AddFile(IFormFile file, string prefferedName, string documentType)
         {
             var fileName = CreateFileName(file.FileName, prefferedName);
             var blob = _blobContainerClient.GetBlobClient(fileName);
 
             var tag = new Dictionary<string, string>();
-
-            tag.Add(MetaDataKey, "Receipts");
+            tag.Add(MetaDataKey, documentType);
 
             var blobOptions = new BlobUploadOptions()
             {

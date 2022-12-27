@@ -1,72 +1,139 @@
 ﻿@page "{handler?}"
 @model DocumentsPageModel
+
+@using Marinel_ui.Helpers;
+@using Marinel_ui.Data.Enums;
+
 @{
     ViewData["Title"] = "Documents";
 }
 <h1>@ViewData["Title"]</h1>
 
-<div class="d-flex align-items-start">
-    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <button class="nav-link active" id="v-pills-books-tab" data-bs-toggle="pill" data-bs-target="#v-pills-books" type="button" role="tab" aria-controls="v-pills-books" aria-selected="false">
-            Receipts
-        </button>
-        <button class="nav-link" id="v-pills-rentals-tab" data-bs-toggle="pill" data-bs-target="#v-pills-rentals" type="button" role="tab" aria-controls="v-pills-rentals" aria-selected="false">
-            Documents
-        </button>
-    </div>
+<button id="newDocumentBtn" type="button" class="btn btn-success">Add New Document</button>
 
-    <div class="tab-content" id="v-pills-tabContent">
-        <div class="tab-pane fade show active" id="v-pills-books" role="tabpanel" aria-labelledby="v-pills-books-tab">
-            <partial name="Document/_DocumentList" model="@Model" />
-        </div>
-        <div class="tab-pane fade" id="v-pills-rentals" role="tabpanel" aria-labelledby="v-pills-rentals-tab">
-            Documents
+<div id="new-document-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="new-document-form" method="post" enctype="multipart/form-data">
 
-            @*  *@
+                    <input type="hidden" name="form-type" value="document" />
+
+                    @*Title*@
+                    <div class="form-group">
+                        <label for="document-name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="document-name" name="document-name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="document-type" class="form-label">Document Type</label>
+                        <select id="document-type" name="document-type" class="form-select">
+                            <option value="Select a document type..." selected>Select a document type...</option>
+                            @{
+                                foreach (var _documentType in Enum.GetValues(typeof(DocumentType)).Cast<DocumentType>())
+                                {
+                                    <option value="@_documentType">@_documentType</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    @*File*@
+                    <div class="form-group">
+                        <label for="library-book-author" class="form-label">File</label>
+                        <input type="file" class="form-control" id="file" name="file" accept="image/*,application/pdf">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="new-document-submit-btn" type="submit" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
     </div>
 </div>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Document Type</th>
+            <th scope="col">Created At</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var _document in Model.Documents)
+            {
+                <tr>
+                    <td>@_document.Name</td>
+                    <td>@_document.DocumentType</td>
+                    <td>@DateTimeHelper.ToDayMonthYear(_document.CreatedAt)</td>
+                    <td>
+                        <a href="@_document.URL">
+                            <button type="button" class="btn btn-warning">
+                                Download
+                            </button>
+                        </a>
+
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger delete-document-btn" value="@_document.Name">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
 @section scripts {
 
-<script>
-    $(function () {
+    <script>$(function () {
 
-        $.fn.deleteDocument = function (documentName) {
+            $.fn.deleteDocument = function (documentName) {
 
-            return $.ajax({
-                type: "GET",
-                url: "/Documents/DeleteDocumentByName",
-                data: { documentName: documentName }
-            });
-        }
-
-        $('#newDocumentBtn').click(function () {
-            $('#new-document-modal').modal('show');
-        });
-
-        $('#new-document-submit-btn').click(function () {
-
-            var documentNameFieldVal = $('#document-name').val();
-            var documentFileFieldVal = $('#file').val();
-
-            if (documentNameFieldVal.length > 0 && documentFileFieldVal.length > 0) {
-                $('#new-document-form').submit();
-            } else {
-                alert('Error: Must Enter all fields');
+                return $.ajax({
+                    type: "GET",
+                    url: "/Documents/DeleteDocumentByName",
+                    data: { documentName: documentName }
+                });
             }
-        });
 
-        $('.delete-document-btn').click(function () {
-
-            var selectedDocumentName = $(this).val();
-
-            $.when($.fn.deleteDocument(selectedDocumentName)).done(function (response) {
-                alert(response);
+            $('#newDocumentBtn').click(function () {
+                $('#new-document-modal').modal('show');
             });
-        });
 
-    });
-</script>
+            $('#new-document-submit-btn').click(function () {
+
+                var documentNameFieldVal = $('#document-name').val();
+                var documentTypeDDLVal = $('#document-type').val();
+                var documentFileFieldVal = $('#file').val();
+
+                if (documentNameFieldVal.length > 0 && documentTypeDDLVal !== 'Select a document type...' && documentFileFieldVal.length > 0) {
+                    $('#new-document-form').submit();
+                } else {
+                    alert('Error: Must Enter all fields');
+                }
+            });
+
+            $('.delete-document-btn').click(function () {
+
+                var selectedDocumentName = $(this).val();
+
+                $.when($.fn.deleteDocument(selectedDocumentName)).done(function (response) {
+                    alert(response);
+                });
+            });
+
+        });</script>
 
 }

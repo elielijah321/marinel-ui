@@ -67,8 +67,9 @@ namespace Marinel_ui.Pages
         private async void AddDocument(IFormFile file)
         {
             var d_Name = Request.Form["document-name"].ToString();
+            var d_Type = Request.Form["document-type"].ToString();
 
-            _aZContainerService.AddFile(file, d_Name);
+            _aZContainerService.AddFile(file, d_Name, d_Type);
         }
 
         public JsonResult OnGetDeleteDocumentByName(string documentName)
