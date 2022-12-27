@@ -97,7 +97,7 @@ namespace Marinel_ui.Services
         }
 
 
-        public void DownloadDocument(string documentName)
+        public async void DownloadDocument(string documentName)
         {
             BlobClient blob = _blobContainerClient.GetBlobClient(documentName);
 
@@ -112,7 +112,7 @@ namespace Marinel_ui.Services
               download.Value.Content.CopyTo(file);
             }
 
-            */
+           
 
 
             //HttpClient httpClient = new HttpClient();
@@ -123,6 +123,36 @@ namespace Marinel_ui.Services
                     stream.CopyTo(fileStream);
                 }
             }
+
+             */
+
+
+            //WebClient webClient = new WebClient();
+
+            // webClient.DownloadFile("https://marineldev.blob.core.windows.net/documents/CarImage.jpg", documentName);
+
+
+
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", documentName);
+
+
+            ;
+
+
+            /*
+
+            var httpClient = new HttpClient();
+
+            using (var stream = await httpClient.GetStreamAsync("https://marineldev.blob.core.windows.net/documents/CarImage.jpg"))
+            {
+                using (var fileStream = new FileStream(documentName, FileMode.CreateNew))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+            }
+
+            */
 
         }
 

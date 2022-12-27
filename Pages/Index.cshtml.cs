@@ -17,6 +17,8 @@ namespace Marinel_ui.Pages
 
         public List<Student> Students { get; set; }
 
+        public string Path { get; set; }
+
         public IndexModel(ILogger<IndexModel> logger, ISchoolRepository schoolRepo)
         {
             _logger = logger;
@@ -26,6 +28,12 @@ namespace Marinel_ui.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             Students = _schoolRepository.GetAllStudents().ToList();
+
+
+            var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "");
+
+            Path = path;
+
             return Page();
         }
     }
