@@ -1,0 +1,122 @@
+﻿@model Marinel_ui.Pages.SettingsPageModel
+
+<button id="newStudentBtn" type="button" class="btn btn-success">Add New Student</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Class</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var student in Model.Students)
+            {
+                <tr>
+                    <td>@student.Name</td>
+                    <td>@student.Class.Name</td>
+                    <td>
+                        <button type="button" class="btn btn-warning edit-student-btn" value="@student.Id">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<div id="newStudentModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="new-student-form" method="post">
+
+                    <input type="hidden" name="form-type" value="student" />
+
+                    <div class="form-group">
+                        <label for="studentName" class="form-label">Student Name</label>
+                        <input type="text" class="form-control" id="studentName" name="studentName">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="studentClass" class="form-label">Class</label>
+                        <select id="studentClass" name="studentClass" class="form-select" aria-label="Default select example">
+                            <option selected>Select a class...</option>
+                            @{
+                                foreach (var student_class in Model.Classes)
+                                {
+                                    <option value="@student_class.Name">@student_class.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="newStudentFormBtn" type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@{
+    foreach (var student in Model.Students)
+    {
+        <div id="edit-student-modal-@student.Id" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit student</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-student-form-@student.Id" method="post">
+
+                            <input type="hidden" name="form-type" value="edit-student" />
+                            <input type="hidden" name="form-id" value="@student.Id" />
+
+                            <div class="form-group">
+                                <label for="student-name-@student.Id" class="form-label">Student Name</label>
+                                <input type="text" class="form-control" id="student-name-@student.Id" name="student-name-@student.Id" value="@student.Name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="student-class-ddl-@student.Id" class="form-label">Class</label>
+                                <select id="student-class-ddl-@student.Id" name="student-class-ddl-@student.Id" class="form-select" aria-label="student-class-ddl-@student.Id">
+                                    @{
+                                        <option value="Select Class...">Select Class...</option>
+                                        @foreach (var _class in Model.Classes)
+                                        {
+                                            if (student.ClassId == _class.Id)
+                                            {
+                                                <option value="@_class.Id" selected>@_class.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@_class.Id">@_class.Name</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary edit-student-submit-btn" value="@student.Id">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

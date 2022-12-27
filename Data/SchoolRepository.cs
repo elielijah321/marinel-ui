@@ -209,6 +209,17 @@ namespace Marinel_ui.Data
         }
 
         // Update
+
+        public void UpdateStudent(Student student)
+        {
+            var _student = _ctx.Students.Where(s => s.Id == student.Id).First();
+
+            _student.Name = student.Name;
+            _student.ClassId = student.ClassId;
+
+            SaveAll();
+        }
+
         public void UpdateFeedingInfoItem(FeedingInfoItem feedingInfoItem)
         {
             var fItem = _ctx.FeedingInfoItems.Where(f => f.Id == feedingInfoItem.Id).First();

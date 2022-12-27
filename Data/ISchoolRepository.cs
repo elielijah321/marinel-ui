@@ -35,6 +35,7 @@ namespace Marinel_ui.Data
         void AddLibraryBook(LibraryBook libraryBook);
         void AddLibraryBookRental(LibraryBookRental libraryBookRental);
 
+        void UpdateStudent(Student student);
         void UpdateTeacher(Teacher teacher);
         void UpdateFeedingInfoItem(FeedingInfoItem feedingInfoItem);
         void UpdateClassFeeInfoItem(ClassFeeInfoItem classFeeInfoItem);

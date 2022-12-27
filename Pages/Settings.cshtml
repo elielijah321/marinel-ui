@@ -30,7 +30,7 @@
 
     <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-students" role="tabpanel" aria-labelledby="v-pills-students-tab">
-            <partial name="_StudentList" model="@Model" />
+            <partial name="Student/_StudentList" model="@Model" />
         </div>
         <div class="tab-pane fade" id="v-pills-teachers" role="tabpanel" aria-labelledby="v-pills-teachers-tab">
             <partial name="Teacher/_TeacherList" model="@Model" />
@@ -72,6 +72,28 @@
                 alert('Error: Must Enter name and select a class');
             }
 
+        });
+
+        $('.edit-student-btn').click(function () {
+
+            var selectedStudentId = $(this).val();
+            var selectedStudentModalId = "#edit-student-modal-" + selectedStudentId;
+
+            $(selectedStudentModalId).modal('show');
+        });
+
+        $('.edit-student-submit-btn').click(function () {
+
+            var formId = $(this).val();
+
+            var nameFieldVal = $('#student-name-' + formId).val();
+            var classDDLVal = $('#student-class-ddl-' + formId).val();
+
+            if (classDDLVal !== 'Select Class...' && nameFieldVal.length > 0) {
+                $('#edit-student-form-' + formId).submit();
+            } else {
+                alert('Error: Must Enter all fields');
+            }
         });
 
         // Teacher

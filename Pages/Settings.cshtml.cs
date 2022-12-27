@@ -54,6 +54,9 @@ namespace Marinel_ui.Pages
                 case "student":
                     AddStudent();
                     break;
+                case "edit-student":
+                    UpdateStudent();
+                    break;
                 case "class":
                     AddClass();
                     break;
@@ -112,6 +115,24 @@ namespace Marinel_ui.Pages
             _schoolRepository.AddStudent(student);
         }
 
+        private void UpdateStudent()
+        {
+            var formIDString = Request.Form[$"form-id"].ToString();
+
+            var t_Name = Request.Form[$"student-name-{formIDString}"].ToString();
+            var t_Class = Request.Form[$"student-class-ddl-{formIDString}"].ToString();
+
+            var studentClass = Classes.FirstOrDefault(c => c.Id.ToString() == t_Class);
+
+
+            var student = new Student();
+            student.Id = Int32.Parse(formIDString);
+            student.Name = t_Name;
+            student.ClassId = studentClass.Id;
+
+            _schoolRepository.UpdateStudent(student);
+        }
+
         private void AddTeacher()
         {
             var t_Name = Request.Form["teacher-name"].ToString();
@@ -146,7 +167,6 @@ namespace Marinel_ui.Pages
 
             _schoolRepository.UpdateTeacher(teacher);
         }
-
 
         private void AddClass()
         {
