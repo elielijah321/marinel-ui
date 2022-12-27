@@ -58,9 +58,20 @@
                     <td>@_document.DocumentType</td>
                     <td>@DateTimeHelper.ToDayMonthYear(_document.CreatedAt)</td>
                     <td>
-                        <button type="button" class="btn btn-warning download-document-btn" value="@_document.Name">
-                            Download
-                        </button>
+
+                        @*
+
+                             <button type="button" class="btn btn-warning download-document-btn" value="@_document.Name">
+                                                        Download
+                                                    </button>
+                        *@
+
+                        <a href="https://marineldev.blob.core.windows.net/documents/CarImage.jpg">
+                            <button type="button" class="btn btn-warning">
+                                Download
+                            </button>
+                        </a>
+                       
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger delete-document-btn" value="@_document.Name">

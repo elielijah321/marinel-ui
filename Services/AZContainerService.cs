@@ -112,19 +112,24 @@ namespace Marinel_ui.Services
               download.Value.Content.CopyTo(file);
             }
 
+            */
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", documentName);
            
 
 
             //HttpClient httpClient = new HttpClient();
             using (Stream stream = blob.DownloadStreaming().Value.Content)
             {
-                using (FileStream fileStream = new FileStream(pathToDownload, FileMode.Create, FileAccess.Write))
+                using (FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
                 {
                     stream.CopyTo(fileStream);
                 }
             }
 
-             */
+             
+
+
 
 
             //WebClient webClient = new WebClient();
@@ -134,10 +139,7 @@ namespace Marinel_ui.Services
 
 
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", documentName);
 
-
-            ;
 
 
             /*
