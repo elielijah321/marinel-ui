@@ -28,6 +28,7 @@ namespace Marinel_ui.Pages
         public List<ExpenseType> ExpenseTypes { get; set; }
         public List<Expense> ExpenseItems { get; set; }
         public List<User> Users { get; set; }
+        public List<AccountTransaction> AccountTransactions { get; set; }
         public List<RoleType> RoleTypes = Enum.GetValues(typeof(RoleType)).Cast<RoleType>().ToList();
 
         public SettingsPageModel(ISchoolRepository schoolRepo, IMSGraphService msGraphService, ILogger<SettingsPageModel> logger)
@@ -92,6 +93,12 @@ namespace Marinel_ui.Pages
                     break;
                 case "edit-teacher":
                     UpdateTeacher();
+                    break;
+                case "account-transaction":
+                    AddAccountTransaction();
+                    break;
+                case "edit-account-transaction":
+                    UpdateAccountTransaction();
                     break;
                 default:
                     break;
@@ -252,6 +259,22 @@ namespace Marinel_ui.Pages
             _schoolRepository.AddExpense(expenseItem);
         }
 
+        private void AddAccountTransaction()
+        {
+            var a_Name = Request.Form["account-transaction-name-ddl"].ToString();
+            var a_Date = Request.Form["account-transaction-date"].ToString();
+            var a_Reason = Request.Form["account-transaction-reason"].ToString();
+            var a_Amount = Request.Form["account-transaction-amount"].ToString();
+
+            var accountTransaction = new AccountTransaction();
+            accountTransaction.AccountName = a_Name;
+            accountTransaction.Date = DateTime.Parse(a_Date);
+            accountTransaction.ReasonForTransaction = a_Reason;
+            accountTransaction.Amount = Decimal.Parse(a_Amount);
+
+            _schoolRepository.AddAccountTransaction(accountTransaction);
+        }
+
         private async Task AddUser()
         {
             var u_Name = Request.Form["name"].ToString();
@@ -374,6 +397,26 @@ namespace Marinel_ui.Pages
             _schoolRepository.UpdateClassItem(classItem);
         }
 
+        private void UpdateAccountTransaction()
+        {
+            var formIDString = Request.Form[$"form-id"].ToString();
+
+            var a_Name = Request.Form[$"account-transaction-name-ddl-{formIDString}"].ToString();
+            var a_Date = Request.Form[$"account-transaction-date-{formIDString}"].ToString();
+            var a_Reason = Request.Form[$"account-transaction-reason-{formIDString}"].ToString();
+            var a_Amount = Request.Form[$"account-transaction-amount-{formIDString}"].ToString();
+
+            var accountTransaction = new AccountTransaction();
+            accountTransaction.Id = Int32.Parse(formIDString);
+            accountTransaction.AccountName = a_Name;
+            accountTransaction.Date = DateTime.Parse(a_Date);
+            accountTransaction.ReasonForTransaction = a_Reason;
+            accountTransaction.Amount = Decimal.Parse(a_Amount);
+
+            _schoolRepository.UpdateAccountTransaction(accountTransaction);
+        }
+
+
         private async Task GetPageData()
         {
             Classes = _schoolRepository.GetAllClasses().ToList();
@@ -383,6 +426,7 @@ namespace Marinel_ui.Pages
             InventoryItems = _schoolRepository.GetAllInventoryItems().ToList();
             ExpenseTypes = _schoolRepository.GetAllExpenseTypes().ToList();
             ExpenseItems = _schoolRepository.GetAllExpenses().ToList();
+            AccountTransactions = _schoolRepository.GetAllAccountTransactions().ToList();
             Users = await _msGraphService.GetAllUsers();
         }
 

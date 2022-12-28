@@ -1,0 +1,164 @@
+﻿@model Marinel_ui.Pages.SettingsPageModel
+@using Marinel_ui.Data.Enums;
+@using Marinel_ui.Helpers;
+
+<button id="newAccountTransactionBtn" type="button" class="btn btn-success">Add New Account transaction</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Account Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Amount</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var account in Model.AccountTransactions)
+            {
+                <tr>
+                    <td>
+                        @{
+                            var accountName = Enum.Parse<AccountNames>(account.AccountName);
+                            <span>@EnumHelper.GetEnumDescription(accountName)</span>
+                        }
+                    </td>
+                    <td>@DateTimeHelper.ToDayMonthYear(account.Date)</td>
+                    <td>@account.ReasonForTransaction</td>
+                    <td>@account.Amount</td>
+
+                    <td>
+                        <button type="button" class="btn btn-warning edit-account-transaction-btn" value="@account.Id">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<div id="newAccountTransactionModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new account transaction</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="new-account-transaction-form" method="post">
+
+                    <input type="hidden" name="form-type" value="account-transaction" />
+
+                    @*Account Name*@
+                    <div class="form-group">
+                        <label for="account-transaction-name-ddl" class="form-label">Account Name</label>
+                        <select id="account-transaction-name-ddl" name="account-transaction-name-ddl" class="form-select" aria-label="account-transaction-name-ddl">
+                            @{
+                                <option value="Select Account...">Select Account...</option>
+                                @foreach (var _account in Enum.GetValues(typeof(AccountNames)).Cast<AccountNames>())
+                                {
+                                    <option value="@_account">@EnumHelper.GetEnumDescription(_account)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    @*Transaction Date*@
+                    <div class="form-group">
+                        <label for="account-transaction-date" class="form-label">Transaction Date</label>
+                        <input type="date" class="form-control" id="account-transaction-date" name="account-transaction-date">
+                    </div>
+
+                    @*Transaction Reason*@
+                    <div class="form-group">
+                        <label for="account-transaction-reason" class="form-label">Reason for transaction</label>
+                        <input type="text" class="form-control" id="account-transaction-reason" name="account-transaction-reason">
+                    </div>
+
+                    @*Transaction amount*@
+                    <div class="form-group">
+                        <label for="account-transaction-amount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" id="account-transaction-amount" name="account-transaction-amount">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="new-account-transaction-btn" type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@{
+    foreach (var account in Model.AccountTransactions)
+    {
+        <div id="edit-account-transaction-modal-@account.Id" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit account transaction</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-account-transaction-form-@account.Id" method="post">
+
+                            <input type="hidden" name="form-type" value="edit-account-transaction" />
+                            <input type="hidden" name="form-id" value="@account.Id" />
+
+                            @*Account Name*@
+                            <div class="form-group">
+                                <label for="account-transaction-name-ddl-@account.Id" class="form-label">Account</label>
+                                <select id="account-transaction-name-ddl-@account.Id" name="account-transaction-name-ddl-@account.Id" class="form-select" aria-label="account-transaction-name-ddl-@account.Id">
+                                    @{
+                                        <option value="Select Account...">Select Account...</option>
+                                        @foreach (var _accountName in Enum.GetValues(typeof(AccountNames)).Cast<AccountNames>())
+                                        {
+                                            if (account.AccountName == _accountName.ToString())
+                                            {
+                                                <option value="@_accountName" selected>@EnumHelper.GetEnumDescription(_accountName)</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@_accountName">@EnumHelper.GetEnumDescription(_accountName)</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            @*Date*@
+                            <div class="form-group">
+                                <label for="account-transaction-date-@account.Id" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="account-transaction-date-@account.Id" name="account-transaction-date-@account.Id" value="@DateTimeHelper.ToYearMonthDay(account.Date)">
+                            </div>
+
+
+                            @*Reason*@
+                            <div class="form-group">
+                                <label for="account-transaction-reason-@account.Id" class="form-label">Reason</label>
+                                <input type="text" class="form-control" id="account-transaction-reason-@account.Id" name="account-transaction-reason-@account.Id" value="@account.ReasonForTransaction">
+                            </div>
+
+                            @*Amount*@
+                            <div class="form-group">
+                                <label for="account-transaction-amount-@account.Id" class="form-label">Amount</label>
+                                <input type="number" class="form-control" id="account-transaction-amount-@account.Id" name="account-transaction-amount-@account.Id" value="@account.Amount">
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary edit-account-transaction-submit-btn" value="@account.Id">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

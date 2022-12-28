@@ -31,6 +31,7 @@ namespace Marinel_ui.Data
         public DbSet<PandCUniformSale> PandCUniformSales { get; set; }
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<AccountTransaction> AccountTransactions { get; set; }
 
         public DbSet<LibraryBook> LibraryBooks { get; set; }
         public DbSet<LibraryBookRental> LibraryBookRentals { get; set; }

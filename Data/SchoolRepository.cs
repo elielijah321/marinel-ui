@@ -103,6 +103,11 @@ namespace Marinel_ui.Data
             return _ctx.LibraryBookRentals.ToList();
         }
 
+        public IEnumerable<AccountTransaction> GetAllAccountTransactions()
+        {
+            return _ctx.AccountTransactions.ToList();
+        }
+
         // Add
 
         public void AddStudent(Student student)
@@ -205,6 +210,12 @@ namespace Marinel_ui.Data
         public void AddLibraryBookRental(LibraryBookRental libraryBookRental)
         {
             _ctx.LibraryBookRentals.Add(libraryBookRental);
+            SaveAll();
+        }
+
+        public void AddAccountTransaction(AccountTransaction accountTransaction)
+        {
+            _ctx.AccountTransactions.Add(accountTransaction);
             SaveAll();
         }
 
@@ -385,6 +396,18 @@ namespace Marinel_ui.Data
             _libraryBookRental.RentedDate = libraryBookRental.RentedDate;
             _libraryBookRental.ExpextedReturnDate = libraryBookRental.ExpextedReturnDate;
             _libraryBookRental.ActualReturnDate = libraryBookRental.ActualReturnDate;
+
+            SaveAll();
+        }
+
+        public void UpdateAccountTransaction(AccountTransaction accountTransaction)
+        {
+            var _accountTransaction = _ctx.AccountTransactions.FirstOrDefault(a => a.Id == accountTransaction.Id);
+
+            _accountTransaction.AccountName = accountTransaction.AccountName;
+            _accountTransaction.Date = accountTransaction.Date;
+            _accountTransaction.ReasonForTransaction = accountTransaction.ReasonForTransaction;
+            _accountTransaction.Amount = accountTransaction.Amount;
 
             SaveAll();
         }
