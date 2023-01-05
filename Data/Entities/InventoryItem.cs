@@ -1,12 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
 
 namespace Marinel_ui.Data.Entities
 {
-    public class InventoryItem
+    public class InventoryItem : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
         public string Name { get; set; }
         public int InventoryTypeId { get; set; }
         public int Quantity { get; set; }

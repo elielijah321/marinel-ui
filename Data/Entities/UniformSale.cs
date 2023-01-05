@@ -1,12 +1,9 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Marinel_ui.Data.Entities
 {
-    public class UniformSale
+    public class UniformSale : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
         public DateTime Date { get; set; }
         public DateTime StockDate { get; set; }
         public int Quantity { get; set; }

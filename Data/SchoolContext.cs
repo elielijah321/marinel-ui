@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Marinel_ui.Data.Entities;
-using Marinel_ui.Data.SeedData;
 using Marinel_ui.Services;
 using System;
 using System.Collections;
@@ -10,6 +9,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using static Marinel_ui.Data.SchoolContext;
+using Microsoft.Graph;
 
 namespace Marinel_ui.Data
 {
@@ -17,6 +18,8 @@ namespace Marinel_ui.Data
     {
         private readonly IConfiguration _config;
         private readonly IWebHostEnvironment _env;
+
+        private const string seedDataFolder = "Data/SeedData";
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
@@ -45,7 +48,7 @@ namespace Marinel_ui.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            var connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? _config["ConnectionString"];
+            var connectionString = Environment.GetEnvironmentVariable("StagingConnectionString") ?? _config["StagingConnectionString"];
             optionsBuilder.UseSqlServer(connectionString);
         }
 
@@ -55,48 +58,37 @@ namespace Marinel_ui.Data
 
             var contentRootPath = _env.ContentRootPath;
 
-            var classes = SeedHelper.GetClasses(contentRootPath);
-            var students = SeedHelper.GetStudents(contentRootPath);
-            var teachers = SeedHelper.GetTeachers(contentRootPath);
-            var expenseTypes = SeedHelper.GetExpenseTypes(contentRootPath);
-            var inventoryTypes = SeedHelper.GetInventoryTypes(contentRootPath);
-            var inventoryItems = SeedHelper.GetInventoryItems(contentRootPath);
+            var classLocation = Path.Combine(contentRootPath, $"{seedDataFolder}/Classes.json");
+            var studentLocation = Path.Combine(contentRootPath, $"{seedDataFolder}/Students.json");
+            var teacherLocation = Path.Combine(contentRootPath, $"{seedDataFolder}/Teachers.json");
+            var expenseTypeLocation = Path.Combine(contentRootPath, $"{seedDataFolder}/ExpenseType.json");
+            var inventoryTypeLocation = Path.Combine(contentRootPath, $"{seedDataFolder}/InventoryTypes.json");
+            var inventoryItemLocation = Path.Combine(contentRootPath, $"{seedDataFolder}/InventoryItems.json");
 
-            foreach (var seedClass in classes)
-            {
-                modelBuilder.Entity<Class>()
-                    .HasData(seedClass);
-            }
+            SeedData<Class>(modelBuilder, classLocation);
+            SeedData<Student>(modelBuilder, studentLocation);
+            SeedData<Teacher>(modelBuilder, teacherLocation);
+            SeedData<ExpenseType>(modelBuilder, expenseTypeLocation);
+            SeedData<InventoryType>(modelBuilder, inventoryTypeLocation);
+            SeedData<InventoryItem>(modelBuilder, inventoryItemLocation);
+        }
 
-            foreach (var seedStudent in students)
-            {
-                modelBuilder.Entity<Student>()
-                    .HasData(seedStudent);
-            }
+        private IEnumerable<T> GetEntitiesFromFile<T>(string filePath) where T : class
+        {
+            var json = System.IO.File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<IEnumerable<T>>(json);
+        }
 
-            foreach (var seedTeacher in teachers)
-            {
-                modelBuilder.Entity<Teacher>()
-                    .HasData(seedTeacher);
-            }
+        private void GiveEntityData<T>(ModelBuilder modelBuilder, IEnumerable<T> values) where T : class
+        {
+            modelBuilder
+                .Entity<T>()
+                .HasData(values);
+        }
 
-            foreach (var seedExpenseType in expenseTypes)
-            {
-                modelBuilder.Entity<ExpenseType>()
-                    .HasData(seedExpenseType);
-            }
-
-            foreach (var seedInventoryType in inventoryTypes)
-            {
-                modelBuilder.Entity<InventoryType>()
-                    .HasData(seedInventoryType);
-            }
-
-            foreach (var seedInventoryItem in inventoryItems)
-            {
-                modelBuilder.Entity<InventoryItem>()
-                    .HasData(seedInventoryItem);
-            }
+        private void SeedData<T>(ModelBuilder modelBuilder, string filePath) where T : class
+        {
+            GiveEntityData<T>(modelBuilder, GetEntitiesFromFile<T>(filePath));
         }
     }
 }
