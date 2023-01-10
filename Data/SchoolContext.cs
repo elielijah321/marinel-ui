@@ -48,7 +48,7 @@ namespace Marinel_ui.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            var connectionString = Environment.GetEnvironmentVariable("StagingConnectionString") ?? _config["StagingConnectionString"];
+            var connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? _config["ConnectionString"];
             optionsBuilder.UseSqlServer(connectionString);
         }
 

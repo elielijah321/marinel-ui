@@ -40,7 +40,7 @@ namespace Marinel_ui.Pages
             return Page();
         }
 
-        public async Task OnPost(IFormFile file)
+        public async Task<IActionResult> OnPost(IFormFile file)
         {
             var formType = Request.Form["form-type"].ToString();
             await GetPageData();
@@ -54,8 +54,7 @@ namespace Marinel_ui.Pages
                     break;
             }
 
-
-            await GetPageData();
+            return RedirectToPage("/Documents");
         }
 
         private async Task GetPageData()
@@ -64,12 +63,18 @@ namespace Marinel_ui.Pages
         }
 
 
-        private async void AddDocument(IFormFile file)
+        private void AddDocument(IFormFile file)
         {
             var d_Name = Request.Form["document-name"].ToString();
             var d_Type = Request.Form["document-type"].ToString();
 
-            _aZContainerService.AddFile(file, d_Name, d_Type);
+            try
+            {
+                _aZContainerService.AddFile(file, d_Name, d_Type);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         public JsonResult OnGetDeleteDocumentByName(string documentName)

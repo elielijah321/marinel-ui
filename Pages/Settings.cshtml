@@ -458,7 +458,7 @@
             var accountReasonFieldVal = $('#account-transaction-reason').val();
             var accountAmountFieldVal = $('#account-transaction-amount').val();
 
-            if (accountNameDDLVal !== 'Select Account...' && accountDateFieldVal.length > 0 && accountReasonFieldVal.length > 0 && accountAmountFieldVal.length > 0) {
+            if (accountNameDDLVal !== 'Select Account...' && accountDateFieldVal.length > 0 && accountReasonFieldVal.length > 0 && accountAmountFieldVal.length > 0 && accountAmountFieldVal > 0) {
                 $('#new-account-transaction-form').submit();
 
             } else {

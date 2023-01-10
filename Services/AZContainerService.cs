@@ -51,12 +51,11 @@ namespace Marinel_ui.Services
                     {
                         file.CopyTo(ms);
                         ms.Position = 0;
-                        await blob.UploadAsync(ms, blobOptions);
+                        blob.Upload(ms, blobOptions);
                     }
                 }
                 catch (Exception ex)
                 {
-
                 }
             }
         }

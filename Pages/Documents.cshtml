@@ -130,10 +130,11 @@
                 var selectedDocumentName = $(this).val();
 
                 $.when($.fn.deleteDocument(selectedDocumentName)).done(function (response) {
-                    alert(response);
+                    location.reload();
                 });
             });
 
-        });</script>
+        });
+    </script>
 
 }
