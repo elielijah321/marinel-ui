@@ -19,8 +19,9 @@
     <None Remove="Data\" />
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
     <None Remove="Pages\Shared\LibraryBook\" />
-    <None Remove="Pages\Shared\Document\" />
     <None Remove="Azure.Storage.Blobs" />
+    <None Remove="Models\" />
+    <None Remove="Pages\Shared\Student\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
@@ -39,6 +40,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Pages\Shared\LibraryBook\" />
-    <Folder Include="Pages\Shared\Document\" />
+    <Folder Include="Models\" />
+    <Folder Include="Pages\Shared\Student\" />
   </ItemGroup>
 </Project>

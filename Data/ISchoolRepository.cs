@@ -19,6 +19,7 @@ namespace Marinel_ui.Data
         IEnumerable<Expense> GetAllExpenses();
         IEnumerable<LibraryBook> GetAllLibraryBook();
         IEnumerable<LibraryBookRental> GetAllLibraryBookRentals();
+        IEnumerable<AccountTransaction> GetAllAccountTransactions();
 
         void AddStudent(Student student);
         void AddTeacher(Teacher teacher);
@@ -34,7 +35,9 @@ namespace Marinel_ui.Data
         void AddExpense(Expense expense);
         void AddLibraryBook(LibraryBook libraryBook);
         void AddLibraryBookRental(LibraryBookRental libraryBookRental);
+        void AddAccountTransaction(AccountTransaction accountTransaction);
 
+        void UpdateStudent(Student student);
         void UpdateTeacher(Teacher teacher);
         void UpdateFeedingInfoItem(FeedingInfoItem feedingInfoItem);
         void UpdateClassFeeInfoItem(ClassFeeInfoItem classFeeInfoItem);
@@ -47,6 +50,7 @@ namespace Marinel_ui.Data
         void UpdateExpense(Expense expense);
         void UpdateLibraryBook(LibraryBook libraryBook);
         void UpdateLibraryBookRental(LibraryBookRental libraryBookRental);
+        void UpdateAccountTransaction(AccountTransaction accountTransaction);
 
         void RemoveTeacher(int teacherID);
     }

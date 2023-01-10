@@ -2,11 +2,13 @@
   {
     "Id": 1,
     "Name": "Elijah",
-    "ClassId": 1
+    "ClassId": 1,
+    "ScholarshipType": null
   },
   {
     "Id": 4,
     "Name": "TJ",
-    "ClassId": 2
+    "ClassId": 2,
+    "ScholarshipType": null
   }
 ]

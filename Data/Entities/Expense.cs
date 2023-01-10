@@ -2,9 +2,8 @@
 
 namespace Marinel_ui.Data.Entities
 {
-    public class Expense
+    public class Expense : BaseEntity
     {
-        public int Id { get; set; }
         public ExpenseType Type { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }

@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Marinel_ui.Data.Entities
 {
-    public class LibraryBookRental
+    public class LibraryBookRental : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
         public int LibraryBookId { get; set; }
         public int StudentId { get; set; }
         public DateTime RentedDate { get; set; }

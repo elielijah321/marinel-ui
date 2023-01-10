@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Marinel_ui.Data.Entities
 {
-    public class PandCUniformSale
+    public class PandCUniformSale : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
         public DateTime DatePaid { get; set; }
         public DateTime ReceivedDate { get; set; }
         public int CheckYardsQuantity { get; set; }

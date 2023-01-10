@@ -12,9 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Marinel_ui.Helpers;
-
-
-
+using Marinel_ui.Models;
 
 namespace Marinel_ui.Pages
 {
@@ -24,6 +22,9 @@ namespace Marinel_ui.Pages
         private readonly ISchoolRepository _schoolRepository;
 
         private readonly IAZContainerService _aZContainerService;
+
+
+        public List<DocumentModel> Documents { get; set; }
 
         public DocumentsPageModel(ISchoolRepository schoolRepo, IAZContainerService aZContainerService,  ILogger<DocumentsPageModel> logger)
         {
@@ -39,7 +40,7 @@ namespace Marinel_ui.Pages
             return Page();
         }
 
-        public async Task OnPost(IFormFile file)
+        public async Task<IActionResult> OnPost(IFormFile file)
         {
             var formType = Request.Form["form-type"].ToString();
             await GetPageData();
@@ -53,21 +54,34 @@ namespace Marinel_ui.Pages
                     break;
             }
 
-
-            await GetPageData();
+            return RedirectToPage("/Documents");
         }
 
         private async Task GetPageData()
         {
-
+            Documents =  _aZContainerService.GetFiles();
         }
 
 
-        private async void AddDocument(IFormFile file)
+        private void AddDocument(IFormFile file)
         {
             var d_Name = Request.Form["document-name"].ToString();
+            var d_Type = Request.Form["document-type"].ToString();
 
-            _aZContainerService.AddFile(file, d_Name);
+            try
+            {
+                _aZContainerService.AddFile(file, d_Name, d_Type);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public JsonResult OnGetDeleteDocumentByName(string documentName)
+        {
+            _aZContainerService.DeleteDocument(documentName);
+
+            return new JsonResult("Ok");
         }
     }
 }

@@ -103,6 +103,11 @@ namespace Marinel_ui.Data
             return _ctx.LibraryBookRentals.ToList();
         }
 
+        public IEnumerable<AccountTransaction> GetAllAccountTransactions()
+        {
+            return _ctx.AccountTransactions.ToList();
+        }
+
         // Add
 
         public void AddStudent(Student student)
@@ -208,7 +213,25 @@ namespace Marinel_ui.Data
             SaveAll();
         }
 
+        public void AddAccountTransaction(AccountTransaction accountTransaction)
+        {
+            _ctx.AccountTransactions.Add(accountTransaction);
+            SaveAll();
+        }
+
         // Update
+
+        public void UpdateStudent(Student student)
+        {
+            var _student = _ctx.Students.Where(s => s.Id == student.Id).First();
+
+            _student.Name = student.Name;
+            _student.ClassId = student.ClassId;
+            _student.ScholarshipType = student.ScholarshipType;
+
+            SaveAll();
+        }
+
         public void UpdateFeedingInfoItem(FeedingInfoItem feedingInfoItem)
         {
             var fItem = _ctx.FeedingInfoItems.Where(f => f.Id == feedingInfoItem.Id).First();
@@ -373,6 +396,18 @@ namespace Marinel_ui.Data
             _libraryBookRental.RentedDate = libraryBookRental.RentedDate;
             _libraryBookRental.ExpextedReturnDate = libraryBookRental.ExpextedReturnDate;
             _libraryBookRental.ActualReturnDate = libraryBookRental.ActualReturnDate;
+
+            SaveAll();
+        }
+
+        public void UpdateAccountTransaction(AccountTransaction accountTransaction)
+        {
+            var _accountTransaction = _ctx.AccountTransactions.FirstOrDefault(a => a.Id == accountTransaction.Id);
+
+            _accountTransaction.AccountName = accountTransaction.AccountName;
+            _accountTransaction.Date = accountTransaction.Date;
+            _accountTransaction.ReasonForTransaction = accountTransaction.ReasonForTransaction;
+            _accountTransaction.Amount = accountTransaction.Amount;
 
             SaveAll();
         }

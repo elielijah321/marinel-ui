@@ -2,6 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Marinel_ui.Models;
+using Azure;
+using System.Reflection.Metadata;
+using System.Net;
+using System.Net.Http;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Marinel_ui.Services
 {
@@ -24,14 +30,13 @@ namespace Marinel_ui.Services
 
         }
 
-        public async void AddFile(IFormFile file, string prefferedName)
+        public async void AddFile(IFormFile file, string prefferedName, string documentType)
         {
             var fileName = CreateFileName(file.FileName, prefferedName);
             var blob = _blobContainerClient.GetBlobClient(fileName);
 
             var tag = new Dictionary<string, string>();
-
-            tag.Add(MetaDataKey, "Receipts");
+            tag.Add(MetaDataKey, documentType);
 
             var blobOptions = new BlobUploadOptions()
             {
@@ -40,15 +45,34 @@ namespace Marinel_ui.Services
 
             if (file != null)
             {
-                using (var ms = new MemoryStream())
+                try
                 {
-                    file.CopyTo(ms);
-                    ms.Position = 0;
-                    await blob.UploadAsync(ms, blobOptions);
+                    using (var ms = new MemoryStream())
+                    {
+                        file.CopyTo(ms);
+                        ms.Position = 0;
+                        blob.Upload(ms, blobOptions);
+                    }
+                }
+                catch (Exception ex)
+                {
                 }
             }
         }
 
+        public List<DocumentModel> GetFiles()
+        {
+            var blobs = _blobContainerClient.GetBlobs(BlobTraits.Metadata);
+
+            List<DocumentModel> documents = new List<DocumentModel>();
+
+            foreach (var blob in blobs)
+            {
+                documents.Add(CreateDocumentModel(blob));
+            }
+
+            return documents;
+        }
 
         private string CreateFileName(string fileName, string prefferedName)
         {
@@ -58,6 +82,25 @@ namespace Marinel_ui.Services
             return result;
         }
 
+
+        private DocumentModel CreateDocumentModel(BlobItem blobItem)
+        {
+            var document = new DocumentModel();
+            document.Id = blobItem.Properties.ETag.ToString();
+            document.Name = blobItem.Name;
+            document.CreatedAt = blobItem.Properties.CreatedOn.Value.Date;
+            document.DocumentType = blobItem.Metadata[MetaDataKey];
+            document.URL = $"{_blobContainerClient.Uri}/{document.Name}";
+
+            return document;
+        }
+
+        public void DeleteDocument(string documentName)
+        {
+            BlobClient blob = _blobContainerClient.GetBlobClient(documentName);
+
+            blob.Delete();
+        }
     }
 }
 

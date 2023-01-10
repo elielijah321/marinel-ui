@@ -25,12 +25,15 @@
         <button class="nav-link" id="v-pills-expenses-tab" data-bs-toggle="pill" data-bs-target="#v-pills-expenses" type="button" role="tab" aria-controls="v-pills-expenses" aria-selected="false">
             Expenses
         </button>
+        <button class="nav-link" id="v-pills-accounts-tab" data-bs-toggle="pill" data-bs-target="#v-pills-accounts" type="button" role="tab" aria-controls="v-pills-accounts" aria-selected="false">
+            Accounts
+        </button>
 
     </div>
 
     <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-students" role="tabpanel" aria-labelledby="v-pills-students-tab">
-            <partial name="_StudentList" model="@Model" />
+            <partial name="Student/_StudentList" model="@Model" />
         </div>
         <div class="tab-pane fade" id="v-pills-teachers" role="tabpanel" aria-labelledby="v-pills-teachers-tab">
             <partial name="Teacher/_TeacherList" model="@Model" />
@@ -47,6 +50,9 @@
         <div class="tab-pane fade" id="v-pills-expenses" role="tabpanel" aria-labelledby="v-pills-expenses-tab">
             <partial name="Expense/_Expense" model="@Model" />
         </div>
+        <div class="tab-pane fade" id="v-pills-accounts" role="tabpanel" aria-labelledby="v-pills-accounts-tab">
+            <partial name="Account/_AccountList" model="@Model" />
+        </div>
     </div>
 </div>
 
@@ -54,6 +60,11 @@
 
 <script>
     $(function () {
+
+        // default datepicker to today
+
+        var todaysDate = new Date().toISOString().split('T')[0];
+        $('#account-transaction-date').val(todaysDate);
 
         // Student 
         $('#newStudentBtn').click(function () {
@@ -72,6 +83,28 @@
                 alert('Error: Must Enter name and select a class');
             }
 
+        });
+
+        $('.edit-student-btn').click(function () {
+
+            var selectedStudentId = $(this).val();
+            var selectedStudentModalId = "#edit-student-modal-" + selectedStudentId;
+
+            $(selectedStudentModalId).modal('show');
+        });
+
+        $('.edit-student-submit-btn').click(function () {
+
+            var formId = $(this).val();
+
+            var nameFieldVal = $('#student-name-' + formId).val();
+            var classDDLVal = $('#student-class-ddl-' + formId).val();
+
+            if (classDDLVal !== 'Select Class...' && nameFieldVal.length > 0) {
+                $('#edit-student-form-' + formId).submit();
+            } else {
+                alert('Error: Must Enter all fields');
+            }
         });
 
         // Teacher
@@ -411,6 +444,54 @@
                 });
             }
         });
+
+
+        // Account 
+        $('#newAccountTransactionBtn').click(function () {
+            $('#newAccountTransactionModal').modal('show');
+        });
+
+        $('#new-account-transaction-btn').click(function () {
+
+            var accountNameDDLVal = $('#account-transaction-name-ddl').val();
+            var accountDateFieldVal = $('#account-transaction-date').val();
+            var accountReasonFieldVal = $('#account-transaction-reason').val();
+            var accountAmountFieldVal = $('#account-transaction-amount').val();
+
+            if (accountNameDDLVal !== 'Select Account...' && accountDateFieldVal.length > 0 && accountReasonFieldVal.length > 0 && accountAmountFieldVal.length > 0 && accountAmountFieldVal > 0) {
+                $('#new-account-transaction-form').submit();
+
+            } else {
+                alert('Error: Must Enter all fields');
+            }
+        });
+
+        $('.edit-account-transaction-btn').click(function () {
+
+            var selectedAccountTransactionId = $(this).val();
+            var selectedStudentModalId = "#edit-account-transaction-modal-" + selectedAccountTransactionId;
+
+            $(selectedStudentModalId).modal('show');
+        });
+
+        $('.edit-account-transaction-submit-btn').click(function () {
+
+            var formId = $(this).val();
+
+            var accountNameDDLVal = $('#account-transaction-name-ddl-' + formId).val();
+            var accountDateFieldVal = $('#account-transaction-date-' + formId).val();
+            var accountReasonFieldVal = $('#account-transaction-reason-' + formId).val();
+            var accountAmountFieldVal = $('#account-transaction-amount-' + formId).val();
+
+            if (accountNameDDLVal !== 'Select Account...' && accountDateFieldVal.length > 0 && accountReasonFieldVal.length > 0 && accountAmountFieldVal.length > 0) {
+                $('#edit-account-transaction-form-' + formId).submit();
+
+            } else {
+                alert('Error: Must Enter all fields');
+            }
+
+        });
+
     });
 </script>
 
